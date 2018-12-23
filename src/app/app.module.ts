@@ -34,6 +34,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {OrganizationDialogComponent} from './dialog/organization-dialog/organization-dialog.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {OrganizationService} from './service/organization-service';
+import {RemoveDialogComponent} from './dialog/remove-dialog/remove-dialog.component';
+import {ToastContainerModule, ToastrModule} from "ngx-toastr";
 
 const appRoutes: Routes = [
   {path: '', component: HomepageComponent},
@@ -47,7 +49,8 @@ const appRoutes: Routes = [
     HomepageComponent,
     OrganizationTabComponent,
     AdminComponent,
-    OrganizationDialogComponent
+    OrganizationDialogComponent,
+    RemoveDialogComponent
   ],
   imports: [
     MatButtonModule,
@@ -72,14 +75,19 @@ const appRoutes: Routes = [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    ToastrModule.forRoot(),
+    ToastContainerModule
   ],
   entryComponents: [
-  AdminComponent,
-  OrganizationDialogComponent,
-  OrganizationTabComponent],
+    AdminComponent,
+    OrganizationDialogComponent,
+    OrganizationTabComponent,
+    RemoveDialogComponent
+  ],
   providers: [
     OrganizationService,
+    ToastrModule
   ],
   exports: [
     MatDividerModule,

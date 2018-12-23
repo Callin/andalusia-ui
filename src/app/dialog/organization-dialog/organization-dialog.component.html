@@ -5,7 +5,17 @@
            formControlName='name'>
     <span *ngIf="!data.organizationFormGroup.get('name').valid && data.organizationFormGroup.get('name').touched"
           class="help-block"> Please enter a valid name
-  </span>
+    </span>
+  </mat-form-field>
+  <mat-form-field class='organization-dialog-input-textarea'>
+      <textarea matInput
+                class='project-dialog-input-textarea'
+                placeholder='Description'
+                formControlName='description'
+                matTextareaAutosize
+                matAutosizeMinRows="2"
+                matAutosizeMaxRows="5">
+      </textarea>
   </mat-form-field>
 
   <div style="float: left; width: 90%">
