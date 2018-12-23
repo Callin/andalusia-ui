@@ -1,0 +1,15 @@
+<div [formGroup]="data.organizationFormGroup">
+  <mat-form-field class='organization-dialog-input'>
+    <input matInput
+           placeholder='Name'
+           formControlName='name'>
+    <span *ngIf="!data.organizationFormGroup.get('name').valid && data.organizationFormGroup.get('name').touched"
+          class="help-block"> Please enter a valid name
+  </span>
+  </mat-form-field>
+
+  <div style="float: left; width: 90%">
+    <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+  </div>
+</div>
