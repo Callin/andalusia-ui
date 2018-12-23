@@ -1,0 +1,8 @@
+.user-dialog-input {
+  width: 100%;
+}
+.user-dialog-input-textarea {
+  width: 100%;
+  min-height: 20%;
+  max-height: 80%;
+}

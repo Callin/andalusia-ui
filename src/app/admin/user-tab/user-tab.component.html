@@ -1,0 +1,49 @@
+<br/>
+<p>There are {{userList.length}} users.</p>
+
+<div class="container-fluid" *ngIf="userList.length > 0">
+  <div class="row">
+    <div class="col-1">Id</div>
+    <div class="col">Name</div>
+    <div class="col">Email</div>
+    <div class="col">Edit</div>
+    <div class="col">Remove</div>
+  </div>
+
+  <mat-divider class="mat-divider-on-board"></mat-divider>
+
+  <div class="row" *ngFor="let user of userList">
+    <div class="col-1">
+      {{user.id}}
+    </div>
+    <div class="col">
+      {{user.name}}
+    </div>
+    <div class="col">
+      {{user.email}}
+    </div>
+    <div class="col">
+      <mat-icon class="account-icon"
+                color="link"
+                matTooltip="Delete project"
+                (click)="openEditUserDialog(user)">
+        mode_edit
+      </mat-icon>
+    </div>
+    <div class="col">
+      <mat-icon class="account-icon"
+                color="link"
+                matTooltip="Delete project"
+                (click)="openRemoveUserDialog(user)">
+        delete_forever
+      </mat-icon>
+    </div>
+    <mat-divider class="mat-divider-on-board"></mat-divider>
+  </div>
+
+</div>
+<br/>
+<button mat-raised-button color="primary" (click)="openNewUserDialog()" matTooltip="Add new user">Add
+  new user
+</button>
+

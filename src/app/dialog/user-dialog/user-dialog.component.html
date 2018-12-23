@@ -1,0 +1,23 @@
+<div [formGroup]="data.userFormGroup">
+  <mat-form-field class='user-dialog-input'>
+    <input matInput
+           placeholder='Name'
+           formControlName='name'>
+    <span *ngIf="!data.userFormGroup.get('name').valid && data.userFormGroup.get('name').touched"
+          class="help-block"> Please enter a valid name
+    </span>
+  </mat-form-field>
+  <mat-form-field class='user-dialog-input'>
+    <input matInput
+           placeholder='Email'
+           formControlName='email'>
+    <span *ngIf="!data.userFormGroup.get('email').valid && data.userFormGroup.get('email').touched"
+          class="help-block"> Please enter a valid email
+    </span>
+  </mat-form-field>
+
+  <div style="float: left; width: 90%">
+    <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+  </div>
+</div>

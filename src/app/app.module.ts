@@ -36,6 +36,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {OrganizationService} from './service/organization-service';
 import {RemoveDialogComponent} from './dialog/remove-dialog/remove-dialog.component';
 import {ToastContainerModule, ToastrModule} from "ngx-toastr";
+import { UserTabComponent } from './admin/user-tab/user-tab.component';
+import { UserDialogComponent } from './dialog/user-dialog/user-dialog.component';
+import {UserService} from "./service/user-service";
 
 const appRoutes: Routes = [
   {path: '', component: HomepageComponent},
@@ -50,7 +53,9 @@ const appRoutes: Routes = [
     OrganizationTabComponent,
     AdminComponent,
     OrganizationDialogComponent,
-    RemoveDialogComponent
+    RemoveDialogComponent,
+    UserTabComponent,
+    UserDialogComponent
   ],
   imports: [
     MatButtonModule,
@@ -83,10 +88,13 @@ const appRoutes: Routes = [
     AdminComponent,
     OrganizationDialogComponent,
     OrganizationTabComponent,
+    UserTabComponent,
+    UserDialogComponent,
     RemoveDialogComponent
   ],
   providers: [
     OrganizationService,
+    UserService,
     ToastrModule
   ],
   exports: [

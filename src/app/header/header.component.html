@@ -6,18 +6,19 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
-      <a class="nav-item nav-link active" routerLink="/">Home <span class="sr-only">(current)</span></a>
+      <a class="nav-item nav-link active" routerLink="/">Home</a>
       <a class="nav-item nav-link" routerLink="/admin">Admin</a>
-      <a class="nav-item nav-link" href="#">Pricing</a>
       <a class="nav-item nav-link disabled" href="#">Disabled</a>
     </div>
   </div>
-  <div>
+  <div mattooltip="Organizations">
     <a routerLink="/organization">
       <i class="material-icons">account_balance</i>
     </a>
+  </div>
+  <div mattooltip="Admin">
     <a routerLink="/admin">
-      <i class="fas fa-globe"></i>
+      <i class="material-icons">settings_applications</i>
     </a>
   </div>
 </nav>
