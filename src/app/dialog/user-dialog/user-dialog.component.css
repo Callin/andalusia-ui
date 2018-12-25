@@ -1,5 +1,6 @@
 .user-dialog-input {
-  width: 100%;
+  width: 30%;
+  margin-right: 5px;
 }
 .user-dialog-input-textarea {
   width: 100%;

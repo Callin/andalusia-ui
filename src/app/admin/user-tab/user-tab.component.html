@@ -6,6 +6,7 @@
     <div class="col-1">Id</div>
     <div class="col">Name</div>
     <div class="col">Email</div>
+    <div class="col">Organization</div>
     <div class="col">Edit</div>
     <div class="col">Remove</div>
   </div>
@@ -23,9 +24,12 @@
       {{user.email}}
     </div>
     <div class="col">
+      <span *ngIf="user.organization != undefined">{{user.organization.name}}</span>
+    </div>
+    <div class="col">
       <mat-icon class="account-icon"
                 color="link"
-                matTooltip="Delete project"
+                matTooltip="Delete user"
                 (click)="openEditUserDialog(user)">
         mode_edit
       </mat-icon>
@@ -33,7 +37,7 @@
     <div class="col">
       <mat-icon class="account-icon"
                 color="link"
-                matTooltip="Delete project"
+                matTooltip="Delete user"
                 (click)="openRemoveUserDialog(user)">
         delete_forever
       </mat-icon>

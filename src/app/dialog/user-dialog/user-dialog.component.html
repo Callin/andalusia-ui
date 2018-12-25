@@ -15,6 +15,13 @@
           class="help-block"> Please enter a valid email
     </span>
   </mat-form-field>
+  <mat-form-field class='user-dialog-input'>
+    <mat-select formControlName="organization" placeholder="Organization">
+      <mat-option *ngFor="let organizationOne of data.organizationList"
+                  [value]="organizationOne">{{organizationOne.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
   <div style="float: left; width: 90%">
     <button mat-raised-button (click)='onNoClick()'>Cancel</button>

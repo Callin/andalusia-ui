@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {ToastrService} from "ngx-toastr";
@@ -6,6 +6,8 @@ import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.co
 import {User} from "../../dto/user";
 import {UserService} from "../../service/user-service";
 import {UserDialogComponent} from "../../dialog/user-dialog/user-dialog.component";
+import {Organization} from "../../dto/organization";
+import {OrganizationService} from "../../service/organization-service";
 
 @Component({
   selector: 'app-user-tab',
@@ -15,14 +17,20 @@ import {UserDialogComponent} from "../../dialog/user-dialog/user-dialog.componen
 export class UserTabComponent implements OnInit {
 
   userList: User[] = [];
+  organizationList: Organization[] = [];
 
   constructor(private dialog: MatDialog,
               private userService: UserService,
+              private organizationService: OrganizationService,
               public formBuilder: FormBuilder,
               private toastr: ToastrService) {
   }
 
   ngOnInit() {
+    this.organizationService.getAllOrganizations().subscribe(
+      (organizations) => this.organizationList = organizations,
+      (error) => console.log(error));
+
     this.userService.getAllUsers().subscribe(
       (users) => this.userList = users,
       (error) => console.log(error));
@@ -32,14 +40,17 @@ export class UserTabComponent implements OnInit {
     const userFormGroup: FormGroup = this.formBuilder.group({
       'id': new FormControl(null),
       'name': new FormControl('', Validators.required),
-      'email': new FormControl(null, Validators.required)
+      'email': new FormControl(null, Validators.required),
+      'organization': new FormControl(null, Validators.required)
     });
 
+    let organizationList = this.organizationList;
     const dialogRef = this.dialog.open(UserDialogComponent, {
       minWidth: '60%',
       minHeight: '50%',
       data: {
-        userFormGroup
+        userFormGroup,
+        organizationList
       }
     });
 
@@ -50,14 +61,15 @@ export class UserTabComponent implements OnInit {
           const user: User = User.getBlankUser();
           user.name = result.userFormGroup.controls['name'].value;
           user.email = result.userFormGroup.controls['email'].value;
+          user.organization = result.userFormGroup.controls['organization'].value;
 
           this.userService.createUser(user).subscribe(
             (response) => {
               this.userList.push(response);
-              this.toastr.success(user.name + ' was updated', 'User update');
+              this.toastr.success(user.name + ' was added', 'Add user');
             },
             (error) => {
-              this.toastr.error(user.name + ' was not updated', 'User update failed');
+              this.toastr.error(user.name + ' was not updated', 'User add failed');
               console.log(error);
             });
         }
@@ -70,14 +82,17 @@ export class UserTabComponent implements OnInit {
     const userFormGroup: FormGroup = this.formBuilder.group({
       'id': new FormControl(user.id),
       'name': new FormControl(user.name, Validators.required),
-      'email': new FormControl(user.email)
+      'email': new FormControl(user.email),
+      'organization': new FormControl(user.organization)
     });
 
+    const organizationList = this.organizationList;
     const dialogRef = this.dialog.open(UserDialogComponent, {
       minWidth: '60%',
       minHeight: '50%',
       data: {
-        userFormGroup
+        userFormGroup,
+        organizationList
       }
     });
 
@@ -87,6 +102,7 @@ export class UserTabComponent implements OnInit {
           user.id = result.userFormGroup.controls['id'].value;
           user.name = result.userFormGroup.controls['name'].value;
           user.email = result.userFormGroup.controls['email'].value;
+          user.organization = result.userFormGroup.controls['organization'].value;
 
           this.userService.updateUser(user).subscribe(
             () => this.toastr.success(user.name + ' was updated', 'User update'),
