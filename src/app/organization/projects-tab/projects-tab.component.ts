@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.component";
 import {Project} from "../../dto/project";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {User} from "../../dto/user";
 import {ActivatedRoute} from "@angular/router";
 import {MatDialog} from "@angular/material";
@@ -11,6 +11,7 @@ import {UserService} from "../../service/user-service";
 import {ToastrService} from "ngx-toastr";
 import {Organization} from "../../dto/organization";
 import {ProjectDialogComponent} from "../../dialog/project-dialog/project-dialog.component";
+import {ProjectUsersDialogComponent} from "../../dialog/project-users-dialog/project-users-dialog.component";
 
 @Component({
   selector: 'app-project-tab',
@@ -28,7 +29,8 @@ export class ProjectsTabComponent implements OnInit {
               private projectService: ProjectService,
               private userService: UserService,
               private toastr: ToastrService,
-              private formBuilder: FormBuilder) { }
+              private formBuilder: FormBuilder) {
+  }
 
   ngOnInit() {
     this.projectService.getAllProjectsByOrganizationId(this.route.snapshot.params['id']).subscribe(
@@ -53,8 +55,7 @@ export class ProjectsTabComponent implements OnInit {
       'users': new FormControl()
     });
 
-    const isNew = true;
-    const orgUsers: User[] = this.organizationUsers;
+    const organizationUsers: User[] = this.organizationUsers;
     let projectUsers: User[] = [];
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
@@ -62,8 +63,7 @@ export class ProjectsTabComponent implements OnInit {
       minHeight: 350, // assumes px
       data: {
         projectForm,
-        isNew,
-        organizationUsers: orgUsers,
+        organizationUsers,
         projectUsers
       }
     });
@@ -75,7 +75,6 @@ export class ProjectsTabComponent implements OnInit {
         project.name = result.projectForm.controls['name'].value;
         project.description = result.projectForm.controls['description'].value;
         project.users = result.projectUsers;
-
         project.organization = this.organization;
 
         this.projectService.createProject(project).subscribe(
@@ -95,38 +94,85 @@ export class ProjectsTabComponent implements OnInit {
     // show predefined data
     let projectForm: FormGroup = this.formBuilder.group({
       'name': new FormControl(project.name, Validators.required),
-      'description': new FormControl(project.description, null)
+      'description': new FormControl(project.description, null),
+      'users': new FormControl(project.users)
     });
 
-    // const dialogRef = this.dialog.open(ProjectDialogComponent, {
-    //   minWidth: '60%',
-    //   minHeight: '40%',
-    //   data: {
-    //     projectForm,
-    //     allTheUsers,
-    //     projectUsers
-    //   }
-    // });
-    //
-    // dialogRef.afterClosed().subscribe(result => {
-    //   console.log('Dialog closed');
-    //   if (result != null) {
-    //     project.name = result.projectForm.controls['name'].value;
-    //     project.description = result.projectForm.controls['description'].value;
-    //     project.organizationUsers = result.projectUsers;
-    //
-    //     project.organization = this.organization;
-    //
-    //     project.organizationUsers.forEach(user => user.organization = this.organization);
-    //
-    //     this.projectService.updateProject(project).subscribe(
-    //       (response) => this.toastr.success(project.name + ' was updated', 'Project update'),
-    //       (error) => {
-    //         this.toastr.error(project.name + ' was not updated', 'Project update failed');
-    //         console.log(error);
-    //       });
-    //   }
-    // });
+    const organizationUsers: User[] = this.organizationUsers;
+    let projectUsers: User[] = project.users;
+    const dialogRef = this.dialog.open(ProjectDialogComponent, {
+      minWidth: '60%',
+      minHeight: '40%',
+      data: {
+        projectForm,
+        organizationUsers,
+        projectUsers
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed');
+      if (result != null) {
+        project.name = result.projectForm.controls['name'].value;
+        project.description = result.projectForm.controls['description'].value;
+        project.users = result.projectUsers;
+        project.organization = this.organization;
+
+        project.users.forEach(user => user.organization = this.organization);
+
+        this.projectService.updateProject(project).subscribe(
+          (response) => this.toastr.success(project.name + ' was updated', 'Project update'),
+          (error) => {
+            this.toastr.error(project.name + ' was not updated', 'Project update failed');
+            console.log(error);
+          });
+      }
+    });
+  }
+
+  openEditProjectUsersDialog(project: Project) {
+    // show predefined data
+    let userFormControlGroup: FormGroup = this.formBuilder.group({
+      'userFormArray': new FormArray([])
+    });
+    const userFormArray = userFormControlGroup.get('userFormArray') as FormArray;
+    let users = this.organizationUsers;
+    users.forEach(user => userFormArray.push(new FormControl(this.isPartOfTheProject(user, project))));
+
+    const dialogRef = this.dialog.open(ProjectUsersDialogComponent, {
+      width: '25%',
+      height: '70%',
+      data: {
+        userFormControlGroup,
+        users,
+        project
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed');
+      if (result != null) {
+        project.users = users.filter((user, i) => userFormControlGroup.value.userFormArray[i] === true);
+        project.organization = this.organization;
+        project.users.forEach(user => user.organization = this.organization);
+
+        this.projectService.updateProject(project).subscribe(
+          (response) => this.toastr.success(project.name + ' was updated', 'Project update'),
+          (error) => {
+            this.toastr.error(name + ' was not updated', 'Project update failed');
+            console.log(error);
+          });
+      }
+    });
+  }
+
+  isPartOfTheProject(user: User, project: Project): boolean {
+    if (project !== null && project.users !== null) {
+      const userIndex = project.users.findIndex(projectUser => projectUser.id === user.id);
+      return userIndex !== -1;
+    }
+
+    return false;
   }
 
   openRemoveProjectDialog(id: number, name: string) {
