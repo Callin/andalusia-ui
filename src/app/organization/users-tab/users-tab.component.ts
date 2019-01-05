@@ -1,38 +1,41 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {MatDialog} from "@angular/material";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {ToastrService} from "ngx-toastr";
-import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.component";
+import {Component, OnInit} from '@angular/core';
 import {User} from "../../dto/user";
-import {UserService} from "../../service/user-service";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserDialogComponent} from "../../dialog/user-dialog/user-dialog.component";
-import {Organization} from "../../dto/organization";
+import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.component";
+import {ActivatedRoute} from "@angular/router";
+import {MatDialog} from "@angular/material";
 import {OrganizationService} from "../../service/organization-service";
+import {ProjectService} from "../../service/project-service";
+import {UserService} from "../../service/user-service";
+import {ToastrService} from "ngx-toastr";
+import {Organization} from "../../dto/organization";
 
 @Component({
-  selector: 'app-user-tab',
-  templateUrl: './user-tab.component.html',
-  styleUrls: ['./user-tab.component.css']
+  selector: 'app-users-tab',
+  templateUrl: './users-tab.component.html',
+  styleUrls: ['./users-tab.component.css']
 })
-export class UserTabComponent implements OnInit {
-
+export class UsersTabComponent implements OnInit {
   users: User[] = [];
-  organizationList: Organization[] = [];
+  organization: Organization;
 
-  constructor(private dialog: MatDialog,
-              private userService: UserService,
+  constructor(private route: ActivatedRoute,
+              private dialog: MatDialog,
               private organizationService: OrganizationService,
-              public formBuilder: FormBuilder,
-              private toastr: ToastrService) {
+              private projectService: ProjectService,
+              private userService: UserService,
+              private toastr: ToastrService,
+              private formBuilder: FormBuilder) {
   }
 
   ngOnInit() {
-    this.organizationService.getAllOrganizations().subscribe(
-      (organizations) => this.organizationList = organizations,
-      (error) => console.log(error));
-
-    this.userService.getAllUsers().subscribe(
+    this.userService.getAllUsersByOrganizationId(this.route.snapshot.params['id']).subscribe(
       (users) => this.users = users,
+      (error) => console.log(error));
+    //
+    this.organizationService.getOrganization(this.route.snapshot.params['id']).subscribe(
+      (organization) => this.organization = organization,
       (error) => console.log(error));
   }
 
@@ -41,10 +44,10 @@ export class UserTabComponent implements OnInit {
       'id': new FormControl(null),
       'name': new FormControl('', Validators.required),
       'email': new FormControl(null, Validators.required),
-      'organization': new FormControl(null, Validators.required)
+      'organization': new FormControl(this.organization, Validators.required)
     });
 
-    let organizationList = this.organizationList;
+    let organizationList = [this.organization];
     const dialogRef = this.dialog.open(UserDialogComponent, {
       minWidth: '60%',
       minHeight: '50%',
@@ -74,7 +77,6 @@ export class UserTabComponent implements OnInit {
             });
         }
       });
-
   }
 
   openEditUserDialog(user: User) {
@@ -83,10 +85,10 @@ export class UserTabComponent implements OnInit {
       'id': new FormControl(user.id),
       'name': new FormControl(user.name, Validators.required),
       'email': new FormControl(user.email),
-      'organization': new FormControl(user.organization)
+      'organization': new FormControl(this.organization, Validators.required)
     });
 
-    const organizationList = this.organizationList;
+    const organizationList = [this.organization];
     const dialogRef = this.dialog.open(UserDialogComponent, {
       minWidth: '60%',
       minHeight: '50%',
@@ -114,34 +116,31 @@ export class UserTabComponent implements OnInit {
       });
   }
 
-  openRemoveUserDialog(user: User) {
-    const type = 'user';
-    const name = user.name;
+  openRemoveUserDialog(id: number, name: string) {
     const dialogRef = this.dialog.open(RemoveDialogComponent, {
       width: '30%',
       height: '20%',
       minHeight: 170, // assumes px
       data: {
-        name,
-        type
+        name
       }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('Dialog closed');
       if (result != null) {
-        this.userService.deleteUser(user.id)
-          .subscribe((response) => {
-              if (response == null) {
-                const indexOfUser = this.users.findIndex(item => item.id === user.id);
-                this.users.splice(indexOfUser, 1);
-                this.toastr.success(user.name + ' was removed', 'User removed');
-              }
-            },
-            (error) => {
-              this.toastr.error(user.name + ' was not removed', 'User removal failed');
-              console.log(error);
-            });
+        this.userService.deleteUser(id).subscribe(
+          (response) => {
+            if (response == null) {
+              const indexOfUser = this.users.findIndex(user => user.id === id);
+              this.users.splice(indexOfUser, 1);
+              this.toastr.success(name + ' was removed', 'User removed');
+            }
+          },
+          (error) => {
+            this.toastr.error(name + ' was not removed', 'User removal failed');
+            console.log(error);
+          });
       }
     });
   }

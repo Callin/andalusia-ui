@@ -39,10 +39,18 @@ import {ToastContainerModule, ToastrModule} from "ngx-toastr";
 import { UserTabComponent } from './admin/user-tab/user-tab.component';
 import { UserDialogComponent } from './dialog/user-dialog/user-dialog.component';
 import {UserService} from "./service/user-service";
+import { OrganizationComponent } from './organization/organization.component';
+import { ProjectsTabComponent } from './organization/projects-tab/projects-tab.component';
+import { UsersTabComponent } from './organization/users-tab/users-tab.component';
+import {ProjectService} from "./service/project-service";
+import {SprintService} from "./service/sprint-service";
+import { ProjectDialogComponent } from './dialog/project-dialog/project-dialog.component';
+import { ProjectUsersDialogComponent } from './dialog/project-users-dialog/project-users-dialog.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomepageComponent},
   {path: 'admin', component: AdminComponent},
+  {path: 'organization/:id', component: OrganizationComponent},
 ];
 
 @NgModule({
@@ -55,7 +63,12 @@ const appRoutes: Routes = [
     OrganizationDialogComponent,
     RemoveDialogComponent,
     UserTabComponent,
-    UserDialogComponent
+    UserDialogComponent,
+    OrganizationComponent,
+    ProjectsTabComponent,
+    UsersTabComponent,
+    ProjectDialogComponent,
+    ProjectUsersDialogComponent
   ],
   imports: [
     MatButtonModule,
@@ -86,14 +99,19 @@ const appRoutes: Routes = [
   ],
   entryComponents: [
     AdminComponent,
+    OrganizationComponent,
     OrganizationDialogComponent,
     OrganizationTabComponent,
     UserTabComponent,
     UserDialogComponent,
+    ProjectDialogComponent,
+    ProjectUsersDialogComponent,
     RemoveDialogComponent
   ],
   providers: [
     OrganizationService,
+    ProjectService,
+    SprintService,
     UserService,
     ToastrModule
   ],

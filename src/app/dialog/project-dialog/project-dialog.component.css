@@ -1,0 +1,18 @@
+
+.project-dialog-input {
+  width: 100%;
+}
+
+.project-dialog-content {
+  width: 100%;
+}
+
+.project-dialog-input-textarea {
+  width: 100%;
+  min-height: 20%;
+  max-height: 80%;
+}
+
+.edit-users {
+  margin-bottom: 40px;
+}

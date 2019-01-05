@@ -1,4 +1,5 @@
 import {User} from "./user";
+import {Project} from "./project";
 
 export class Organization {
 
@@ -8,20 +9,25 @@ export class Organization {
 
   description: string;
 
-  userList: User[];
+  users: User[];
+
+  projects: Project[];
 
   constructor(id: number,
               name: string,
               description: string,
-              userList: User[]) {
+              users: User[],
+              projects: Project[]) {
     this.id = id;
     this.name = name;
     this.description = description;
-    this.userList = userList;
+    this.users = users;
+    this.projects = projects;
   }
 
   static getBlankOrganization(): Organization {
     return new Organization(
+      null,
       null,
       null,
       null,

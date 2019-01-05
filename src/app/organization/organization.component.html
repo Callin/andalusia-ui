@@ -1,0 +1,14 @@
+<div toastContainer></div>
+<h4 *ngIf="!isNull(organization)">{{organization.name}}</h4>
+<mat-tab-group>
+  <mat-tab label="Projects">
+    <ng-template matTabContent>
+      <app-project-tab></app-project-tab>
+    </ng-template>
+  </mat-tab>
+  <mat-tab label="Users">
+    <ng-template matTabContent>
+      <app-users-tab></app-users-tab>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>

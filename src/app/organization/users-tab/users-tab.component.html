@@ -6,7 +6,6 @@
     <div class="col-1">Id</div>
     <div class="col">Name</div>
     <div class="col">Email</div>
-    <div class="col">Organization</div>
     <div class="col">Edit</div>
     <div class="col">Remove</div>
   </div>
@@ -24,12 +23,9 @@
       {{user.email}}
     </div>
     <div class="col">
-      <span *ngIf="user.organization != undefined">{{user.organization.name}}</span>
-    </div>
-    <div class="col">
       <mat-icon class="account-icon"
                 color="link"
-                matTooltip="Delete user"
+                matTooltip="Edit user"
                 (click)="openEditUserDialog(user)">
         mode_edit
       </mat-icon>
@@ -37,17 +33,15 @@
     <div class="col">
       <mat-icon class="account-icon"
                 color="link"
-                matTooltip="Delete user"
-                (click)="openRemoveUserDialog(user)">
+                matTooltip="Delete project"
+                (click)="openRemoveUserDialog(user.id, user.name)">
         delete_forever
       </mat-icon>
     </div>
     <mat-divider class="mat-divider-on-board"></mat-divider>
   </div>
-
 </div>
 <br/>
-<button mat-raised-button color="primary" (click)="openNewUserDialog()" matTooltip="Add new user">Add
-  new user
+<button mat-raised-button color="primary" (click)="openNewUserDialog()"
+        matTooltip="Add new user">Add new user
 </button>
-

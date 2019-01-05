@@ -1,0 +1,31 @@
+<div [formGroup]="data.projectForm">
+  <mat-form-field class='project-dialog-input'>
+    <input matInput
+           placeholder='Title'
+           formControlName='name'>
+    <span *ngIf="!data.projectForm.get('name').valid && data.projectForm.get('name').touched"
+          class="help-block"> Please enter a valid title
+  </span>
+  </mat-form-field>
+
+  <mat-form-field class='project-dialog-input-textarea'>
+      <textarea matInput
+                class='project-dialog-input-textarea'
+                placeholder='Description'
+                formControlName='description'
+                matTextareaAutosize
+                matAutosizeMinRows="2"
+                matAutosizeMaxRows="5">
+      </textarea>
+  </mat-form-field>
+  <div class="edit-users">
+    <button mat-raised-button color="primary" (click)="addUsers(data.organizationUsers, data.projectUsers)">Edit users
+    </button>
+    <span>Assigned users: {{data.projectUsers.length}}</span>
+  </div>
+
+  <div style="float: left; width: 90%">
+    <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+    <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+  </div>
+</div>

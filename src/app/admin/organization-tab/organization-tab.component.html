@@ -26,11 +26,11 @@
     </div>
     <div class="col" (click)="openEditOrganizationUsersDialog(organization)">
       <span class="edit-users">Edit users <span
-        *ngIf="organization.userList != undefined">[{{organization.userList.length}}]</span>
+        *ngIf="organization.users != undefined">[{{organization.users.length}}]</span>
       </span>
     </div>
     <div class="col">
-      <a routerLink="/organization" routerLinkActive="active">Organization board</a>
+      <a routerLink="/organization/{{organization.id}}" routerLinkActive="active">Organization board</a>
     </div>
     <div class="col">
       <mat-icon class="account-icon"

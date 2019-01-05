@@ -109,8 +109,8 @@ export class OrganizationTabComponent implements OnInit {
         this.organizationService.deleteOrganization(organization.id)
           .subscribe((response) => {
               if (response == null) {
-                const indexOfTask = this.organizationList.findIndex(item => item.id === organization.id);
-                this.organizationList.splice(indexOfTask, 1);
+                const indexOfOrganization = this.organizationList.findIndex(item => item.id === organization.id);
+                this.organizationList.splice(indexOfOrganization, 1);
                 this.toastr.success(organization.name + ' was removed', 'Organization removed');
               }
             },

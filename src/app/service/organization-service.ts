@@ -12,13 +12,10 @@ export class OrganizationService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getOrganization(organizationId: number, brief: string): Observable<Organization> {
+  getOrganization(organizationId: number): Observable<Organization> {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
 
-    let params = new HttpParams();
-    params = params.append('brief', brief);
-
-    return this.httpClient.get<Organization>(AppConstants.ORGANIZATION_URL + '/' + organizationId, {headers: header, params: params});
+    return this.httpClient.get<Organization>(AppConstants.ORGANIZATION_URL + '/' + organizationId, {headers: header});
   }
 
   getAllOrganizations(): Observable<Organization[]> {
