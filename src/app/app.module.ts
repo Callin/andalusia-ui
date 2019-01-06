@@ -46,11 +46,13 @@ import {ProjectService} from "./service/project-service";
 import {SprintService} from "./service/sprint-service";
 import { ProjectDialogComponent } from './dialog/project-dialog/project-dialog.component';
 import { ProjectUsersDialogComponent } from './dialog/project-users-dialog/project-users-dialog.component';
+import { ProjectBoardComponent } from './project-board/project-board.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomepageComponent},
   {path: 'admin', component: AdminComponent},
   {path: 'organization/:id', component: OrganizationComponent},
+  {path: 'project/:id', component: ProjectBoardComponent},
 ];
 
 @NgModule({
@@ -68,7 +70,8 @@ const appRoutes: Routes = [
     ProjectsTabComponent,
     UsersTabComponent,
     ProjectDialogComponent,
-    ProjectUsersDialogComponent
+    ProjectUsersDialogComponent,
+    ProjectBoardComponent
   ],
   imports: [
     MatButtonModule,

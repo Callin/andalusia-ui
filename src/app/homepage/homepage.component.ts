@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {ProjectService} from "../service/project-service";
+import {Project} from "../dto/project";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-homepage',
@@ -7,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomepageComponent implements OnInit {
 
-  constructor() { }
+  projects: Project[] = [];
+
+  constructor(private route: ActivatedRoute,
+              private projectService: ProjectService) { }
 
   ngOnInit() {
-  }
+    this.projectService.getAllProjectsByUserId(4).subscribe( // to be changed
+      (projects) => this.projects = projects,
+      (error) => console.log(error));
+    }
 
 }

@@ -31,6 +31,11 @@ export class ProjectService {
     return this.httpClient.get<Project[]>(AppConstants.PROJECT_URL + '/organization/' + id, {headers: header});
   }
 
+  getAllProjectsByUserId(id: number): Observable<Project[]> {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.get<Project[]>(AppConstants.PROJECT_URL + '/user/' + id, {headers: header});
+  }
+
   createProject(project: Project): Observable<Project> {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
     return this.httpClient.post<Project>(AppConstants.PROJECT_URL, project, {headers: header});

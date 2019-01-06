@@ -23,13 +23,9 @@ export class OrganizationService {
     return this.httpClient.get<Organization[]>(AppConstants.ORGANIZATION_URL + '/all', {headers: header});
   }
 
-  getAllOrganizationsByUserId(userId: number, brief: string): Observable<Organization[]> {
+  getAllOrganizationsByUserId(userId: number): Observable<Organization[]> {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-
-    let params = new HttpParams();
-    params = params.append('brief', brief);
-
-    return this.httpClient.get<Organization[]>(AppConstants.ORGANIZATION_URL + '/user/' + userId, {headers: header, params: params});
+    return this.httpClient.get<Organization[]>(AppConstants.ORGANIZATION_URL + '/user/' + userId, {headers: header});
   }
 
   createOrganization(organization: Organization): Observable<Organization> {
