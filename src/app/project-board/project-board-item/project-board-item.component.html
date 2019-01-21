@@ -1,0 +1,30 @@
+<mat-card class="board-item" *ngIf="filterItems(userStory, NEW, userStory.sprint)">
+  <mat-card-header class="board-user-story-header" (click)="openExistingUserStoryDialog(userStory)">
+    <mat-card-title>{{(userStory.name.length>25)? (userStory.name | slice:0:25)+'...':(userStory.name)}}
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="owner">Owner: {{getUserName(userStory.user)}}</div>
+    <mat-form-field>
+      <mat-select [(value)]="userStory.status" (change)='onUserStoryStatusChange(userStory)'>
+        <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div>Priority: {{userStory.priority}}</div>
+    <div>
+      <span>Estimate: {{userStory.estimation}} h</span>
+      <span>
+              <mat-icon class="add-task-bug" color="link" matTooltip="Delete story"
+                        (click)="openRemoveStoryDialog(userStory)">delete_forever</mat-icon>
+              <mat-icon class="add-task-bug" color="primary" (click)="openNewUserStoryDialog()"
+                        matTooltip="Add new story">add_box</mat-icon>
+              <mat-icon class="add-task-bug" color="basic" (click)="openNewTaskDialog(userStory)"
+                        matTooltip="Add new task">add_box</mat-icon>
+              <mat-icon class="add-task-bug" color="warn" (click)="openNewBugDialog(userStory)"
+                        matTooltip="Add new bug">add_box</mat-icon>
+            </span>
+    </div>
+
+  </mat-card-content>
+</mat-card>

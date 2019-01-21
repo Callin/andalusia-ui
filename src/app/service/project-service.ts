@@ -12,13 +12,9 @@ export class ProjectService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getProject(projectId: number, brief: string): Observable<Project> {
+  getProject(projectId: number): Observable<Project> {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
-
-    let params = new HttpParams();
-    params = params.append('brief', brief);
-
-    return this.httpClient.get<Project>(AppConstants.PROJECT_URL + '/' + projectId, {headers: header, params: params});
+    return this.httpClient.get<Project>(AppConstants.PROJECT_URL + '/' + projectId, {headers: header});
   }
 
   getAllProjects(): Observable<Project[]> {

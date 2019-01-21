@@ -47,6 +47,7 @@ import {SprintService} from "./service/sprint-service";
 import { ProjectDialogComponent } from './dialog/project-dialog/project-dialog.component';
 import { ProjectUsersDialogComponent } from './dialog/project-users-dialog/project-users-dialog.component';
 import { ProjectBoardComponent } from './project-board/project-board.component';
+import { ProjectBoardItemComponent } from './project-board/project-board-item/project-board-item.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomepageComponent},
@@ -71,7 +72,8 @@ const appRoutes: Routes = [
     UsersTabComponent,
     ProjectDialogComponent,
     ProjectUsersDialogComponent,
-    ProjectBoardComponent
+    ProjectBoardComponent,
+    ProjectBoardItemComponent
   ],
   imports: [
     MatButtonModule,
