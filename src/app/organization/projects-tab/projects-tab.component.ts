@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.component";
 import {Project} from "../../dto/project";
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -19,9 +19,7 @@ import {ProjectUsersDialogComponent} from "../../dialog/project-users-dialog/pro
   styleUrls: ['./projects-tab.component.css']
 })
 export class ProjectsTabComponent implements OnInit {
-  projectList: Project[] = [];
-  organizationUsers: User[] = [];
-  organization: Organization;
+  @Input() organization: Organization;
 
   constructor(private route: ActivatedRoute,
               private dialog: MatDialog,
@@ -33,17 +31,6 @@ export class ProjectsTabComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.projectService.getAllProjectsByOrganizationId(this.route.snapshot.params['id']).subscribe(
-      (projects) => this.projectList = projects,
-      (error) => console.log(error));
-
-    this.userService.getAllUsersByOrganizationId(this.route.snapshot.params['id']).subscribe(
-      (users) => this.organizationUsers = users,
-      (error) => console.log(error));
-    //
-    this.organizationService.getOrganization(this.route.snapshot.params['id']).subscribe(
-      (organization) => this.organization = organization,
-      (error) => console.log(error));
   }
 
   openNewProjectDialog() {
@@ -55,7 +42,7 @@ export class ProjectsTabComponent implements OnInit {
       'users': new FormControl()
     });
 
-    const organizationUsers: User[] = this.organizationUsers;
+    const organizationUsers: User[] = this.organization.users;
     let projectUsers: User[] = [];
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       width: '60%',
@@ -80,7 +67,7 @@ export class ProjectsTabComponent implements OnInit {
         this.projectService.createProject(project).subscribe(
           (response) => {
             this.toastr.success(project.name + ' was created', 'Project add');
-            this.projectList.push(response);
+            this.organization.projects.push(response);
           },
           (error) => {
             this.toastr.error('Project was not created', 'Project add failed');
@@ -98,7 +85,7 @@ export class ProjectsTabComponent implements OnInit {
       'users': new FormControl(project.users)
     });
 
-    const organizationUsers: User[] = this.organizationUsers;
+    const organizationUsers: User[] = this.organization.users;
     let projectUsers: User[] = project.users;
     const dialogRef = this.dialog.open(ProjectDialogComponent, {
       minWidth: '60%',
@@ -116,9 +103,9 @@ export class ProjectsTabComponent implements OnInit {
         project.name = result.projectForm.controls['name'].value;
         project.description = result.projectForm.controls['description'].value;
         project.users = result.projectUsers;
-        project.organization = this.organization;
+        project.organization = Organization.getOrganization(this.organization.id);
 
-        project.users.forEach(user => user.organization = this.organization);
+        project.users.forEach(user => user.organization = Organization.getOrganization(this.organization.id));
 
         this.projectService.updateProject(project).subscribe(
           (response) => this.toastr.success(project.name + ' was updated', 'Project update'),
@@ -136,7 +123,7 @@ export class ProjectsTabComponent implements OnInit {
       'userFormArray': new FormArray([])
     });
     const userFormArray = userFormControlGroup.get('userFormArray') as FormArray;
-    let users = this.organizationUsers;
+    let users = this.organization.users;
     users.forEach(user => userFormArray.push(new FormControl(this.isPartOfTheProject(user, project))));
 
     const dialogRef = this.dialog.open(ProjectUsersDialogComponent, {
@@ -193,8 +180,8 @@ export class ProjectsTabComponent implements OnInit {
         this.projectService.deleteProject(id).subscribe(
           (response) => {
             if (response == null) {
-              const indexOfProject = this.projectList.findIndex(project => project.id === id);
-              this.projectList.splice(indexOfProject, 1);
+              const indexOfProject = this.organization.projects.findIndex(project => project.id === id);
+              this.organization.projects.splice(indexOfProject, 1);
               this.toastr.success(name + ' was removed', 'Project removed');
             }
           },

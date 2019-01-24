@@ -21,4 +21,8 @@ export class ProjectBoardComponent implements OnInit {
       (error) => console.log(error));
   }
 
+  openNewUserStoryDialog() {
+
+  }
+
 }

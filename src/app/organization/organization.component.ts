@@ -14,7 +14,7 @@ import {ActivatedRoute} from "@angular/router";
 export class OrganizationComponent implements OnInit {
 
   users: User[] = [];
-  organization: Organization;
+  organization: Organization = Organization.getBlankOrganization();
 
   constructor(private route: ActivatedRoute,
               private dialog: MatDialog,

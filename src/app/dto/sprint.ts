@@ -29,7 +29,7 @@ export class Sprint {
     this.project = project;
   }
 
-  static getBlankUser(): Sprint {
+  static getBlankSprint(): Sprint {
     return new Sprint(
       null,
       null,

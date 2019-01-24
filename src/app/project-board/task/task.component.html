@@ -1,0 +1,22 @@
+<mat-card class="board-item">
+  <mat-card-header class="board-task-header" (click)="openExistingTaskDialog(userStory, task)">
+    <mat-card-title>{{(task.name.length > 25) ? (task.name | slice:0:25) + '...' : (task.name)}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="owner">Owner: {{getUserName(task.user)}}</div>
+    <mat-form-field>
+      <mat-select [(value)]="task.status" (change)='onTaskStatusChange(task, userStory)'>
+        <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div>Priority: {{task.priority}}</div>
+    <div>
+      <span>Estimate: {{task.estimation}} h</span>
+      <span>
+        <mat-icon class="add-task-bug" color="link" matTooltip="Delete task"
+                  (click)="openRemoveTaskDialog(task, userStory)">delete_forever</mat-icon>
+      </span>
+    </div>
+  </mat-card-content>
+</mat-card>

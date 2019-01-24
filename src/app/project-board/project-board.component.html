@@ -1,1 +1,72 @@
 <h4>{{project.name}}</h4>
+<div class="row">
+</div>
+
+<mat-divider class="menu-divider"></mat-divider>
+
+<div class="row">
+  <div class="col">New</div>
+  <div class="col">In Progress</div>
+  <div class="col">In Review</div>
+  <div class="col">Done</div>
+</div>
+<mat-divider class="menu-divider"></mat-divider>
+
+<div class="row" *ngIf="project.userStories === null || project.userStories.length === 0">
+  <div class="col">
+    <br/>
+    <br/>
+    <button mat-raised-button color="primary" (click)="openNewUserStoryDialog()" matTooltip="Add new story">Add new
+      user story
+    </button>
+  </div>
+</div>
+
+<div class="row" *ngFor="let userStory of project.userStories">
+  <div class="col-sm-3">
+    <!--- -------------- status = New --------------  -->
+    <app-user-story [userStory]="userStory" *ngIf="userStory.status === AppConstants.NEW"></app-user-story>
+    <div *ngFor="let task of userStory.tasks">
+      <app-task [task]="task" *ngIf="task.status === AppConstants.NEW"></app-task>
+    </div>
+    <div *ngFor="let bug of userStory.bugs">
+      <app-bug [bug]="bug" *ngIf="bug.status === AppConstants.NEW"></app-bug>
+    </div>
+  </div>
+
+  <!--- -------------- status = In progress --------------  -->
+  <div class="col-sm-3">
+    <app-user-story [userStory]="userStory" *ngIf="userStory.status === AppConstants.IN_PROGRESS"></app-user-story>
+    <div *ngFor="let task of userStory.tasks">
+      <app-task [task]="task" *ngIf="task.status === AppConstants.IN_PROGRESS"></app-task>
+    </div>
+    <div *ngFor="let bug of userStory.bugs">
+      <app-bug [bug]="bug" *ngIf="bug.status === AppConstants.IN_PROGRESS"></app-bug>
+    </div>
+  </div>
+
+  <div class="col-sm-3">
+    <!--- -------------- userStory if status = In Review --------------  -->
+    <div class="col-sm-3">
+      <app-user-story [userStory]="userStory" *ngIf="userStory.status === AppConstants.IN_REVIEW"></app-user-story>
+      <div *ngFor="let task of userStory.tasks">
+        <app-task [task]="task" *ngIf="task.status === AppConstants.IN_REVIEW"></app-task>
+      </div>
+      <div *ngFor="let bug of userStory.bugs">
+        <app-bug [bug]="bug" *ngIf="bug.status === AppConstants.IN_REVIEW"></app-bug>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-3">
+    <!--- -------------- userStory if status = Done --------------  -->
+    <app-user-story [userStory]="userStory" *ngIf="userStory.status === AppConstants.DONE"></app-user-story>
+    <div *ngFor="let task of userStory.tasks">
+      <app-task [task]="task" *ngIf="task.status === AppConstants.DONE"></app-task>
+    </div>
+    <div *ngFor="let bug of userStory.bugs">
+      <app-bug [bug]="bug" *ngIf="bug.status === AppConstants.DONE"></app-bug>
+    </div>
+  </div>
+  <mat-divider class="mat-divider-on-board"></mat-divider>
+</div>

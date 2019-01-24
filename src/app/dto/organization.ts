@@ -30,7 +30,16 @@ export class Organization {
       null,
       null,
       null,
+      [User.getBlankUser()],
+      [Project.getBlankProject()]);
+  }
+
+  static getOrganization(id: number): Organization {
+    return new Organization(
+      id,
       null,
-      null);
+      null,
+      [User.getBlankUser()],
+      [Project.getBlankProject()]);
   }
 }

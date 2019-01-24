@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {User} from "../../dto/user";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserDialogComponent} from "../../dialog/user-dialog/user-dialog.component";
@@ -18,7 +18,7 @@ import {Organization} from "../../dto/organization";
 })
 export class UsersTabComponent implements OnInit {
   users: User[] = [];
-  organization: Organization;
+  @Input() organization: Organization;
 
   constructor(private route: ActivatedRoute,
               private dialog: MatDialog,
@@ -30,13 +30,7 @@ export class UsersTabComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getAllUsersByOrganizationId(this.route.snapshot.params['id']).subscribe(
-      (users) => this.users = users,
-      (error) => console.log(error));
-    //
-    this.organizationService.getOrganization(this.route.snapshot.params['id']).subscribe(
-      (organization) => this.organization = organization,
-      (error) => console.log(error));
+     this.users = this.organization.users;
   }
 
   openNewUserDialog() {

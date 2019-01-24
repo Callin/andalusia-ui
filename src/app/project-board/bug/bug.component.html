@@ -1,0 +1,24 @@
+<mat-card class="board-item" *ngIf="filterItems(bug, NEW, userStory.sprint)">
+  <mat-card-header class="board-bug-header" (click)="openExistingBugDialog(bug, userStory)">
+    <mat-card-title>{{(bug.name.length>25)? (bug.name | slice:0:25)+'...':(bug.name)}}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="owner">Owner: {{getUserName(bug.user)}}</div>
+
+    <mat-form-field>
+      <mat-select [(value)]="bug.status" (change)='onBugStatusChange(bug, userStory)'>
+        <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div>Priority: {{bug.priority}}</div>
+    <div>
+      <span>Estimate: {{bug.estimation}} h</span>
+      <span>
+                <mat-icon class="add-task-bug" color="link" matTooltip="Delete bug"
+                          (click)="openRemoveBugDialog(bug, userStory)">delete_forever</mat-icon>
+              </span>
+    </div>
+
+  </mat-card-content>
+</mat-card>
