@@ -50,6 +50,9 @@ import { ProjectBoardComponent } from './project-board/project-board.component';
 import { UserStoryComponent } from './project-board/user-story/user-story.component';
 import { TaskComponent } from './project-board/task/task.component';
 import { BugComponent } from './project-board/bug/bug.component';
+import { UserstoryDialogComponent } from './dialog/userstory-dialog/userstory-dialog.component';
+import { TaskDialogComponent } from './dialog/task-dialog/task-dialog.component';
+import { BugDialogComponent } from './dialog/bug-dialog/bug-dialog.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomepageComponent},
@@ -77,7 +80,10 @@ const appRoutes: Routes = [
     ProjectBoardComponent,
     UserStoryComponent,
     TaskComponent,
-    BugComponent
+    BugComponent,
+    UserstoryDialogComponent,
+    TaskDialogComponent,
+    BugDialogComponent
   ],
   imports: [
     MatButtonModule,
@@ -113,6 +119,9 @@ const appRoutes: Routes = [
     OrganizationTabComponent,
     UserTabComponent,
     UserDialogComponent,
+    UserstoryDialogComponent,
+    TaskDialogComponent,
+    BugDialogComponent,
     ProjectDialogComponent,
     ProjectUsersDialogComponent,
     RemoveDialogComponent
