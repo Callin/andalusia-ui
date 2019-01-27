@@ -53,6 +53,7 @@ import { BugComponent } from './project-board/bug/bug.component';
 import { UserstoryDialogComponent } from './dialog/userstory-dialog/userstory-dialog.component';
 import { TaskDialogComponent } from './dialog/task-dialog/task-dialog.component';
 import { BugDialogComponent } from './dialog/bug-dialog/bug-dialog.component';
+import {UserStoryService} from "./service/userstory-service";
 
 const appRoutes: Routes = [
   {path: '', component: HomepageComponent},
@@ -131,6 +132,7 @@ const appRoutes: Routes = [
     ProjectService,
     SprintService,
     UserService,
+    UserStoryService,
     ToastrModule
   ],
   exports: [
