@@ -54,17 +54,15 @@
 
   <div class="col-sm-3">
     <!--- -------------- userStory if status = In Review --------------  -->
-    <div class="col-sm-3">
-      <app-user-story *ngIf="userStory.status === IN_REVIEW"
-                      [userStory]="userStory"
-                      [project]="project">
-      </app-user-story>
-      <div *ngFor="let task of userStory.tasks">
-        <app-task [task]="task" *ngIf="task.status === IN_REVIEW"></app-task>
-      </div>
-      <div *ngFor="let bug of userStory.bugs">
-        <app-bug [bug]="bug" *ngIf="bug.status === IN_REVIEW"></app-bug>
-      </div>
+    <app-user-story *ngIf="userStory.status === IN_REVIEW"
+                    [userStory]="userStory"
+                    [project]="project">
+    </app-user-story>
+    <div *ngFor="let task of userStory.tasks">
+      <app-task [task]="task" *ngIf="task.status === IN_REVIEW"></app-task>
+    </div>
+    <div *ngFor="let bug of userStory.bugs">
+      <app-bug [bug]="bug" *ngIf="bug.status === IN_REVIEW"></app-bug>
     </div>
   </div>
 

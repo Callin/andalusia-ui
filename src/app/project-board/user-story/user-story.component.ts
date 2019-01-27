@@ -117,6 +117,7 @@ export class UserStoryComponent implements OnInit {
           this.userStory.priority = result.boardItemForm.controls['priority'].value;
           this.userStory.estimation = result.boardItemForm.controls['estimation'].value;
 
+          this.userStory.user = User.getBlankUser();
           this.userStory.user = result.boardItemForm.controls['user'].value;
 
           this.userStory.project = Project.getBlankProject();
@@ -124,7 +125,10 @@ export class UserStoryComponent implements OnInit {
 
           console.log('On create user story: ');
           this.userStoryService.updateUserStory(this.userStory).subscribe(
-            () => this.toastService.info('User story has been updated ', 'User story update'),
+            () => {
+              this.toastService.info('User story has been updated ', 'User story update');
+              boardItemForm.controls['user'].setValue(this.userStory.user);
+            },
             () => this.toastService.error('User story has not been updated ', 'User story update'))
         }
       });
