@@ -31,7 +31,11 @@
 
     </app-user-story>
     <div *ngFor="let task of userStory.tasks">
-      <app-task [task]="task" *ngIf="task.status === NEW"></app-task>
+      <app-task *ngIf="task.status === NEW"
+                [task]="task"
+                [projectUsers]="project.users"
+                [userStory]="userStory">
+      </app-task>
     </div>
     <div *ngFor="let bug of userStory.bugs">
       <app-bug [bug]="bug" *ngIf="bug.status === NEW"></app-bug>
@@ -45,7 +49,10 @@
                     [project]="project">
     </app-user-story>
     <div *ngFor="let task of userStory.tasks">
-      <app-task [task]="task" *ngIf="task.status === IN_PROGRESS"></app-task>
+      <app-task *ngIf="task.status === IN_PROGRESS"
+                [task]="task"
+                [projectUsers]="project.users"
+                [userStory]="userStory">></app-task>
     </div>
     <div *ngFor="let bug of userStory.bugs">
       <app-bug [bug]="bug" *ngIf="bug.status === IN_PROGRESS"></app-bug>
@@ -53,13 +60,16 @@
   </div>
 
   <div class="col-sm-3">
-    <!--- -------------- userStory if status = In Review --------------  -->
+    <!--- -------------- status = In Review --------------  -->
     <app-user-story *ngIf="userStory.status === IN_REVIEW"
                     [userStory]="userStory"
                     [project]="project">
     </app-user-story>
     <div *ngFor="let task of userStory.tasks">
-      <app-task [task]="task" *ngIf="task.status === IN_REVIEW"></app-task>
+      <app-task *ngIf="task.status === IN_REVIEW"
+                [task]="task"
+                [projectUsers]="project.users"
+                [userStory]="userStory">></app-task>
     </div>
     <div *ngFor="let bug of userStory.bugs">
       <app-bug [bug]="bug" *ngIf="bug.status === IN_REVIEW"></app-bug>
@@ -67,13 +77,16 @@
   </div>
 
   <div class="col-sm-3">
-    <!--- -------------- userStory if status = Done --------------  -->
+    <!--- -------------- status = Done --------------  -->
     <app-user-story *ngIf="userStory.status === DONE"
                     [userStory]="userStory"
                     [project]="project">
     </app-user-story>
     <div *ngFor="let task of userStory.tasks">
-      <app-task [task]="task" *ngIf="task.status === DONE"></app-task>
+      <app-task *ngIf="task.status === DONE"
+                [task]="task"
+                [projectUsers]="project.users"
+                [userStory]="userStory">></app-task>
     </div>
     <div *ngFor="let bug of userStory.bugs">
       <app-bug [bug]="bug" *ngIf="bug.status === DONE"></app-bug>

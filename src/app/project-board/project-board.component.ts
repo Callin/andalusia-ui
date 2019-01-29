@@ -16,10 +16,10 @@ import {Util} from "../util/util";
   styleUrls: ['./project-board.component.css']
 })
 export class ProjectBoardComponent implements OnInit {
-  private NEW = AppConstants.NEW;
-  private IN_PROGRESS = AppConstants.IN_PROGRESS;
-  private IN_REVIEW = AppConstants.IN_REVIEW;
-  private DONE = AppConstants.DONE;
+  public NEW = AppConstants.NEW;
+  public IN_PROGRESS = AppConstants.IN_PROGRESS;
+  public IN_REVIEW = AppConstants.IN_REVIEW;
+  public DONE = AppConstants.DONE;
 
   project: Project = Project.getBlankProject();
 

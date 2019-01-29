@@ -15,3 +15,12 @@
   color: #000000;
   cursor: pointer;
 }
+
+.owner {
+  padding-top: 10px;
+}
+
+.add-task-bug {
+  float: right;
+  cursor: pointer;
+}

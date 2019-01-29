@@ -15,3 +15,8 @@
   color: #ffffff;
   cursor: pointer;
 }
+
+.add-task-bug {
+  float: right;
+  cursor: pointer;
+}

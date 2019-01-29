@@ -8,6 +8,9 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserstoryDialogComponent} from "../../dialog/userstory-dialog/userstory-dialog.component";
 import {Project} from "../../dto/project";
 import {MatDialog} from "@angular/material";
+import {TaskDialogComponent} from "../../dialog/task-dialog/task-dialog.component";
+import {Task} from "../../dto/task";
+import {TaskService} from "../../service/task-service";
 
 @Component({
   selector: 'app-user-story',
@@ -22,6 +25,7 @@ export class UserStoryComponent implements OnInit {
   public statusList = AppConstants.STATUS_LIST;
 
   constructor(private userStoryService: UserStoryService,
+              private taskService: TaskService,
               public formBuilder: FormBuilder,
               public dialog: MatDialog,
               private toastService: ToastrService) {
@@ -53,8 +57,7 @@ export class UserStoryComponent implements OnInit {
       data: {
         boardItemForm,
         allUsers,
-        statusList,
-        isNew
+        statusList
       }
     };
 
@@ -77,8 +80,11 @@ export class UserStoryComponent implements OnInit {
 
           console.log('On create user story: ');
           this.userStoryService.createUserStory(userStory).subscribe(
-            (response) => this.project.userStories.push(response),
-            (error) => console.log(error));
+            (response) => {
+              this.project.userStories.push(response);
+              this.toastService.info('User story has been added', 'User story add');
+            },
+            () => this.toastService.error('User story has not been added', 'User story add'))
         }
       });
 
@@ -141,6 +147,57 @@ export class UserStoryComponent implements OnInit {
     this.userStoryService.updateUserStory(this.userStory).subscribe(
         (response) => this.toastService.info('User story has been updated ', 'User story update'),
         (error) => this.toastService.error('User story has not been updated ', 'User story update'))
+  }
+
+  addNewTask() {
+    let boardItemForm: FormGroup = this.formBuilder.group({
+      'id': new FormControl(null),
+      'name': new FormControl("", Validators.required),
+      'description': new FormControl(""),
+      'status': new FormControl(AppConstants.NEW),
+      'priority': new FormControl(2),
+      'estimation': new FormControl(2),
+      'user': new FormControl(null, Validators.required)
+    });
+
+    const allUsers = this.project.users;
+    const statusList: string[] = AppConstants.STATUS_LIST;
+
+    let matDialogConfig = {
+      data: {
+        boardItemForm,
+        allUsers,
+        statusList
+      }
+    };
+
+    const dialogRef = this.dialog.open(TaskDialogComponent, matDialogConfig);
+
+    dialogRef.afterClosed()
+      .subscribe(result => {
+        if (result != null) {
+          let task: Task = Task.getBlankTask();
+          task.name = result.boardItemForm.controls['name'].value;
+          task.description = result.boardItemForm.controls['description'].value;
+          task.status = result.boardItemForm.controls['status'].value;
+          task.priority = result.boardItemForm.controls['priority'].value;
+          task.estimation = result.boardItemForm.controls['estimation'].value;
+
+          task.user = result.boardItemForm.controls['user'].value;
+
+          task.userStory = UserStory.getBlankUserStory();
+          task.userStory.id = this.userStory.id;
+
+          console.log('On create user story: ');
+          this.taskService.createTask(task).subscribe(
+            (response) => {
+              this.userStory.tasks.push(response);
+              this.toastService.info('Task has been added', 'Task add');
+            },
+            () => this.toastService.error('User story has not been updated ', 'User story update'))
+        }
+      });
+
   }
 
   getUserName(user: User): string {
