@@ -55,6 +55,7 @@ import { TaskDialogComponent } from './dialog/task-dialog/task-dialog.component'
 import { BugDialogComponent } from './dialog/bug-dialog/bug-dialog.component';
 import {UserStoryService} from "./service/userstory-service";
 import {TaskService} from "./service/task-service";
+import {BugService} from "./service/bug-service";
 
 const appRoutes: Routes = [
   {path: '', component: HomepageComponent},
@@ -135,6 +136,7 @@ const appRoutes: Routes = [
     UserService,
     UserStoryService,
     TaskService,
+    BugService,
     ToastrModule
   ],
   exports: [

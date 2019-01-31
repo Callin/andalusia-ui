@@ -1,3 +1,74 @@
-<p>
-  bug-dialog works!
-</p>
+<div class="custom-container" [formGroup]="data.boardItemForm">
+  <div class="row">
+    <div class="col">
+      <mat-form-field class='userstory-name'>
+        <input matInput
+               placeholder="Title"
+               formControlName='name'>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <mat-form-field class='userstory-description'>
+      <textarea matInput
+                class='userstory-description-textarea'
+                placeholder='Description'
+                formControlName='description'>
+      </textarea>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <mat-form-field class="userstory-select" >
+        <mat-select placeholder='Owner ' formControlName='user'>
+          <mat-option *ngFor='let user of data.allUsers'
+                      [value]='user'>
+            {{user.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <mat-form-field class="userstory-select">
+        <input matInput
+               placeholder='Priority'
+               formControlName='priority'>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <mat-form-field class="userstory-select">
+        <mat-select placeholder='Status'
+                    formControlName='status'>
+          <mat-option *ngFor='let status of data.statusList'
+                      value={{status}}>
+            {{status}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="col">
+      <mat-form-field class="userstory-select">
+        <input matInput
+               placeholder='Estimation'
+               formControlName='estimation'>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button mat-raised-button (click)='onNoClick()'>Cancel</button>
+    </div>
+    <div class="col">
+      <button mat-raised-button color="primary" [mat-dialog-close]='data'>Save</button>
+    </div>
+  </div>
+</div>

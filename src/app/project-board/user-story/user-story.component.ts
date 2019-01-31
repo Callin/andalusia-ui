@@ -11,6 +11,10 @@ import {MatDialog} from "@angular/material";
 import {TaskDialogComponent} from "../../dialog/task-dialog/task-dialog.component";
 import {Task} from "../../dto/task";
 import {TaskService} from "../../service/task-service";
+import {Bug} from "../../dto/bug";
+import {BugService} from "../../service/bug-service";
+import {BugDialogComponent} from "../../dialog/bug-dialog/bug-dialog.component";
+import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.component";
 
 @Component({
   selector: 'app-user-story',
@@ -26,6 +30,7 @@ export class UserStoryComponent implements OnInit {
 
   constructor(private userStoryService: UserStoryService,
               private taskService: TaskService,
+              private bugService: BugService,
               public formBuilder: FormBuilder,
               public dialog: MatDialog,
               private toastService: ToastrService) {
@@ -194,11 +199,94 @@ export class UserStoryComponent implements OnInit {
               this.userStory.tasks.push(response);
               this.toastService.info('Task has been added', 'Task add');
             },
-            () => this.toastService.error('User story has not been updated ', 'User story update'))
+            () => this.toastService.error('Task has not been updated ', 'Task update'))
         }
       });
 
   }
+
+  addNewBug() {
+    let boardItemForm: FormGroup = this.formBuilder.group({
+      'id': new FormControl(null),
+      'name': new FormControl("", Validators.required),
+      'description': new FormControl(""),
+      'status': new FormControl(AppConstants.NEW),
+      'priority': new FormControl(2),
+      'estimation': new FormControl(2),
+      'user': new FormControl(null, Validators.required)
+    });
+
+    const allUsers = this.project.users;
+    const statusList: string[] = AppConstants.STATUS_LIST;
+
+    let matDialogConfig = {
+      data: {
+        boardItemForm,
+        allUsers,
+        statusList
+      }
+    };
+
+    const dialogRef = this.dialog.open(BugDialogComponent, matDialogConfig);
+
+    dialogRef.afterClosed()
+      .subscribe(result => {
+        if (result != null) {
+          let bug: Bug = Bug.getBlankBug();
+          bug.name = result.boardItemForm.controls['name'].value;
+          bug.description = result.boardItemForm.controls['description'].value;
+          bug.status = result.boardItemForm.controls['status'].value;
+          bug.priority = result.boardItemForm.controls['priority'].value;
+          bug.estimation = result.boardItemForm.controls['estimation'].value;
+
+          bug.user = result.boardItemForm.controls['user'].value;
+
+          bug.userStory = UserStory.getBlankUserStory();
+          bug.userStory.id = this.userStory.id;
+
+          this.bugService.createBug(bug).subscribe(
+            (response) => {
+              this.userStory.bugs.push(response);
+              this.toastService.info('Bug has been added', 'Bug add');
+            },
+            () => this.toastService.error('Bug has not been updated ', 'Bug update'))
+        }
+      });
+
+  }
+
+  openRemoveStoryDialog() {
+    const type = 'user story';
+    const name = this.userStory.name;
+    const dialogRef = this.dialog.open(RemoveDialogComponent, {
+      width: '30%',
+      height: '20%',
+      minHeight: 170, // assumes px
+      data: {
+        name,
+        type
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed');
+      if (result != null) {
+        this.userStoryService.deleteUserStory(this.userStory.id).subscribe(
+          (response) => {
+            if (response == null) {
+              const indexOfUserStory = this.project.userStories.findIndex(item => item.id === this.userStory.id);
+              this.project.userStories.splice(indexOfUserStory, 1);
+              this.toastService.success(this.userStory.name + ' user story was removed', 'User story removed');
+            }
+          },
+          (error) => {
+            this.toastService.error(this.userStory.name + ' was not removed', 'User story removal failed');
+            console.log(error);
+          });
+      }
+    });
+  }
+
 
   getUserName(user: User): string {
     return (user === null || user === undefined) ? "none" : user.name;

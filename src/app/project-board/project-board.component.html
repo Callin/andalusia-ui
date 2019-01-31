@@ -55,7 +55,10 @@
                 [userStory]="userStory">></app-task>
     </div>
     <div *ngFor="let bug of userStory.bugs">
-      <app-bug [bug]="bug" *ngIf="bug.status === IN_PROGRESS"></app-bug>
+      <app-bug *ngIf="bug.status === IN_PROGRESS"
+                [bug]="bug"
+                [projectUsers]="project.users"
+                [userStory]="userStory">></app-bug>
     </div>
   </div>
 
@@ -72,7 +75,10 @@
                 [userStory]="userStory">></app-task>
     </div>
     <div *ngFor="let bug of userStory.bugs">
-      <app-bug [bug]="bug" *ngIf="bug.status === IN_REVIEW"></app-bug>
+      <app-bug *ngIf="bug.status === IN_REVIEW"
+                [bug]="bug"
+                [projectUsers]="project.users"
+                [userStory]="userStory">></app-bug>
     </div>
   </div>
 
@@ -89,7 +95,10 @@
                 [userStory]="userStory">></app-task>
     </div>
     <div *ngFor="let bug of userStory.bugs">
-      <app-bug [bug]="bug" *ngIf="bug.status === DONE"></app-bug>
+      <app-bug *ngIf="bug.status === DONE"
+                [bug]="bug"
+                [projectUsers]="project.users"
+                [userStory]="userStory">></app-bug>
     </div>
   </div>
   <mat-divider class="mat-divider-on-board"></mat-divider>

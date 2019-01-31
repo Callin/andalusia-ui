@@ -6,10 +6,10 @@ import {TaskService} from "../../service/task-service";
 import {ToastrService} from "ngx-toastr";
 import {UserStory} from "../../dto/user-story";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserstoryDialogComponent} from "../../dialog/userstory-dialog/userstory-dialog.component";
-import {Project} from "../../dto/project";
 import {MatDialog} from "@angular/material";
 import {TaskDialogComponent} from "../../dialog/task-dialog/task-dialog.component";
+import {Bug} from "../../dto/bug";
+import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.component";
 
 @Component({
   selector: 'app-task',
@@ -92,5 +92,39 @@ export class TaskComponent implements OnInit {
       });
 
   }
+
+
+  openRemoveTaskDialog() {
+    const type = 'task';
+    const name = this.task.name;
+    const dialogRef = this.dialog.open(RemoveDialogComponent, {
+      width: '30%',
+      height: '20%',
+      minHeight: 170, // assumes px
+      data: {
+        name,
+        type
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed');
+      if (result != null) {
+        this.taskService.deleteTask(this.task.id)
+          .subscribe((response) => {
+              if (response == null) {
+                const indexOfTask = this.userStory.tasks.findIndex(item => item.id === this.task.id);
+                this.userStory.tasks.splice(indexOfTask, 1);
+                this.toastService.success(this.task.name + ' task was removed', 'Task removed');
+              }
+            },
+            (error) => {
+              this.toastService.error(this.task.name + ' was not removed', 'Task removal failed');
+              console.log(error);
+            });
+      }
+    });
+  }
+
 
 }

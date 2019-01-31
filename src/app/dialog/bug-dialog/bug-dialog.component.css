@@ -1,0 +1,19 @@
+.custom-container {
+  min-width: 600px;
+  min-height: 400px;
+}
+.userstory-name {
+  width: 100%;
+}
+
+.userstory-description {
+  width: 100%;
+}
+
+.userstory-select {
+  width: 100%;
+}
+
+.userstory-description-textarea {
+  height: 150px;
+}

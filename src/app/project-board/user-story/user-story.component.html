@@ -17,12 +17,12 @@
       <span>Estimate: {{userStory.estimation}} h</span>
       <span>
               <mat-icon class="add-task-bug" color="link" matTooltip="Delete story"
-                        (click)="openRemoveStoryDialog(userStory)">delete_forever</mat-icon>
+                        (click)="openRemoveStoryDialog()">delete_forever</mat-icon>
               <mat-icon class="add-task-bug" color="primary" (click)="addNewUserStory()"
                         matTooltip="Add new story">add_box</mat-icon>
               <mat-icon class="add-task-bug" color="basic" (click)="addNewTask()"
                         matTooltip="Add new task">add_box</mat-icon>
-              <mat-icon class="add-task-bug" color="warn" (click)="openNewBugDialog(userStory)"
+              <mat-icon class="add-task-bug" color="warn" (click)="addNewBug()"
                         matTooltip="Add new bug">add_box</mat-icon>
             </span>
     </div>
