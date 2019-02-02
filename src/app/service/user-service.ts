@@ -31,6 +31,11 @@ export class UserService {
     return this.httpClient.get<User[]>(AppConstants.USER_URL + '/organization/' + id, {headers: header});
   }
 
+  getAllUsersByProjectId(projectId: number): Observable<User[]> {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    return this.httpClient.get<User[]>(AppConstants.USER_URL + '/project/' + projectId, {headers: header});
+  }
+
   createUser(user: User): Observable<User> {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
     return this.httpClient.post<User>(AppConstants.USER_URL, user, {headers: header});

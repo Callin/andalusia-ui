@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Bug} from "../../dto/bug";
 import {UserStory} from "../../dto/user-story";
 import {User} from "../../dto/user";
@@ -18,21 +18,23 @@ import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.co
 export class BugComponent implements OnInit {
 
   @Input() bug: Bug = Bug.getBlankBug();
-  @Input() userStory: UserStory = UserStory.getBlankUserStory();
+  @Input() userStoryId: number;
   @Input() projectUsers: User[] = [];
+  @Output() onRemove = new EventEmitter<number>()
   public statusList = AppConstants.STATUS_LIST;
 
   constructor(private bugService: BugService,
               private formBuilder: FormBuilder,
               public dialog: MatDialog,
-              private toastService: ToastrService) { }
+              private toastService: ToastrService) {
+  }
 
   ngOnInit() {
   }
 
   onStatusChange() {
     this.bug.userStory = UserStory.getBlankUserStory();
-    this.bug.userStory.id = this.userStory.id;
+    this.bug.userStory.id = this.userStoryId;
     this.bugService.updateBug(this.bug).subscribe(
       () => this.toastService.info('Bug has been updated ', 'Bug update'),
       () => this.toastService.error('Bug has not been updated ', 'Bug update'))
@@ -78,8 +80,8 @@ export class BugComponent implements OnInit {
           this.bug.user = User.getBlankUser();
           this.bug.user = result.boardItemForm.controls['user'].value;
 
-          this.bug.userStory= UserStory.getBlankUserStory();
-          this.bug.userStory.id = this.userStory.id;
+          this.bug.userStory = UserStory.getBlankUserStory();
+          this.bug.userStory.id = this.userStoryId;
 
           this.bugService.updateBug(this.bug).subscribe(
             () => {
@@ -112,8 +114,7 @@ export class BugComponent implements OnInit {
         this.bugService.deleteBug(this.bug.id)
           .subscribe((response) => {
               if (response == null) {
-                const indexOfBug = this.userStory.bugs.findIndex(item => item.id === this.bug.id);
-                this.userStory.bugs.splice(indexOfBug, 1);
+                this.onRemove.emit(this.bug.id);
                 this.toastService.success(this.bug.name + ' bug was removed', 'Bug removed');
               }
             },

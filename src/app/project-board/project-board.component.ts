@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ProjectService} from "../service/project-service";
 import {Project} from "../dto/project";
@@ -9,6 +9,10 @@ import {UserStory} from "../dto/user-story";
 import {UserstoryDialogComponent} from "../dialog/userstory-dialog/userstory-dialog.component";
 import {MatDialog} from "@angular/material";
 import {Util} from "../util/util";
+import {SprintService} from "../service/sprint-service";
+import {Sprint} from "../dto/sprint";
+import {UserService} from "../service/user-service";
+import {User} from "../dto/user";
 
 @Component({
   selector: 'app-project-board',
@@ -21,22 +25,64 @@ export class ProjectBoardComponent implements OnInit {
   public IN_REVIEW = AppConstants.IN_REVIEW;
   public DONE = AppConstants.DONE;
 
-  project: Project = Project.getBlankProject();
+  projectId: number;
+  currentSprint: Sprint = Sprint.getBlankSprint();
+  sprints: Sprint[] = [];
+  userStories: UserStory[];
+  projectUsers: User[];
 
   constructor(private route: ActivatedRoute,
               private formBuilder: FormBuilder,
               private userStoryService: UserStoryService,
+              private userService: UserService,
               private projectService: ProjectService,
-              public dialog: MatDialog) { }
+              private springService: SprintService,
+              public dialog: MatDialog) {
+  }
 
   ngOnInit() {
-    this.projectService.getProject(this.route.snapshot.params['id']).subscribe( // to be changed
-      (project) => this.project = project,
+    this.projectId = this.route.snapshot.params['id'];
+
+    this.springService.getAllByProjectIdBrief(this.projectId).subscribe(
+      (response: Sprint[]) => this.sprints = response,
+      (error) => console.log(error));
+
+    this.springService.getCurrentSprint(this.projectId).subscribe(
+      (response: Sprint) => this.currentSprint = response,
+      (error) => console.log(error));
+
+    this.userStoryService.getAllUserStoriesByProjectIdAndCurrentSprint(this.projectId).subscribe(
+      (response) => this.userStories = response,
+      (error) => console.log(error));
+
+    this.userService.getAllUsersByProjectId(this.projectId).subscribe(
+      (response) => this.projectUsers = response,
       (error) => console.log(error));
   }
 
+  onAddUserStory(userStory: UserStory) {
+    this.userStories.push(userStory);
+  }
+
+  onRemoveUserStory(userStoryId: number) {
+    const indexOfUserStory = this.userStories.findIndex(item => item.id === userStoryId);
+    this.userStories.splice(indexOfUserStory, 1);
+  }
+
+  onRemoveTask(taskId: number, userStoryId: number) {
+    let userStory = this.userStories.find((item) => item.id === userStoryId);
+    const indexOfTask = userStory.tasks.findIndex(item => item.id === taskId);
+    userStory.tasks.splice(indexOfTask, 1);
+  }
+
+  onRemoveBug(bugId: number, userStoryId: number) {
+    let userStory = this.userStories.find((item) => item.id === userStoryId);
+    const indexOfBug = userStory.bugs.findIndex(item => item.id === bugId);
+    userStory.tasks.splice(indexOfBug, 1);
+  }
+
   addNewUserStory() {
-      let boardItemForm: FormGroup = this.formBuilder.group({
+    let boardItemForm: FormGroup = this.formBuilder.group({
       'id': new FormControl(null),
       'name': new FormControl("", Validators.required),
       'description': new FormControl(""),
@@ -46,7 +92,7 @@ export class ProjectBoardComponent implements OnInit {
       'user': new FormControl(null, Validators.required)
     });
 
-    const allUsers = this.project.users;
+    const allUsers = this.projectUsers;
     const statusList: string[] = AppConstants.STATUS_LIST;
     const isNew = true;
 
@@ -74,11 +120,11 @@ export class ProjectBoardComponent implements OnInit {
           userStory.user = result.boardItemForm.controls['user'].value;
 
           userStory.project = Project.getBlankProject();
-          userStory.project.id = this.project.id;
+          userStory.project.id = this.projectId;
 
           console.log('On create user story: ');
           this.userStoryService.createUserStory(userStory).subscribe(
-            (response) => this.project.userStories.push(response),
+            (response) => this.userStories.push(response),
             (error) => console.log(error));
         }
       });
@@ -86,11 +132,7 @@ export class ProjectBoardComponent implements OnInit {
   }
 
   isUserStoryListEmpty(): boolean {
-    if (!Util.isNullOrUndefined(this.project)) {
-      return Util.isNullOrUndefined(this.project.userStories) || this.project.userStories.length === 0;
-    }
-
-    return false;
+    return Util.isNullOrUndefined(this.userStories) || this.userStories.length === 0;
   }
 
 }

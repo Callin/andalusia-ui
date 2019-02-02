@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {UserStory} from "../../dto/user-story";
 import {User} from "../../dto/user";
 import {AppConstants} from "../../util/app-constants";
@@ -24,7 +24,10 @@ import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.co
 export class UserStoryComponent implements OnInit {
 
   @Input() userStory: UserStory = UserStory.getBlankUserStory();
-  @Input() project: Project;
+  @Input() projectUsers: User[] = [];
+  @Input() projectId: number;
+  @Output() onAdd = new EventEmitter<UserStory>();
+  @Output() onRemove = new EventEmitter<number>();
 
   public statusList = AppConstants.STATUS_LIST;
 
@@ -54,7 +57,7 @@ export class UserStoryComponent implements OnInit {
       'user': new FormControl(null, Validators.required)
     });
 
-    const allUsers = this.project.users;
+    const allUsers = this.projectUsers;
     const statusList: string[] = AppConstants.STATUS_LIST;
     const isNew = true;
 
@@ -81,12 +84,13 @@ export class UserStoryComponent implements OnInit {
           userStory.user = result.boardItemForm.controls['user'].value;
 
           userStory.project = Project.getBlankProject();
-          userStory.project.id = this.project.id;
+          userStory.project.id = this.projectId;
 
           console.log('On create user story: ');
           this.userStoryService.createUserStory(userStory).subscribe(
             (response) => {
-              this.project.userStories.push(response);
+              // this.project.userStories.push(response);
+              this.onAdd.emit(response);
               this.toastService.info('User story has been added', 'User story add');
             },
             () => this.toastService.error('User story has not been added', 'User story add'))
@@ -106,7 +110,7 @@ export class UserStoryComponent implements OnInit {
       'user': new FormControl(this.userStory.user, Validators.required)
     });
 
-    const allUsers = this.project.users;
+    const allUsers = this.projectUsers;
     const statusList: string[] = AppConstants.STATUS_LIST;
 
     let matDialogConfig = {
@@ -132,7 +136,7 @@ export class UserStoryComponent implements OnInit {
           this.userStory.user = result.boardItemForm.controls['user'].value;
 
           this.userStory.project = Project.getBlankProject();
-          this.userStory.project.id = this.project.id;
+          this.userStory.project.id = this.projectId;
 
           console.log('On create user story: ');
           this.userStoryService.updateUserStory(this.userStory).subscribe(
@@ -148,7 +152,7 @@ export class UserStoryComponent implements OnInit {
 
   onUserStoryStatusChange() {
     this.userStory.project = Project.getBlankProject();
-    this.userStory.project.id = this.project.id;
+    this.userStory.project.id = this.projectId;
     this.userStoryService.updateUserStory(this.userStory).subscribe(
         (response) => this.toastService.info('User story has been updated ', 'User story update'),
         (error) => this.toastService.error('User story has not been updated ', 'User story update'))
@@ -165,7 +169,7 @@ export class UserStoryComponent implements OnInit {
       'user': new FormControl(null, Validators.required)
     });
 
-    const allUsers = this.project.users;
+    const allUsers = this.projectUsers;
     const statusList: string[] = AppConstants.STATUS_LIST;
 
     let matDialogConfig = {
@@ -216,7 +220,7 @@ export class UserStoryComponent implements OnInit {
       'user': new FormControl(null, Validators.required)
     });
 
-    const allUsers = this.project.users;
+    const allUsers = this.projectUsers;
     const statusList: string[] = AppConstants.STATUS_LIST;
 
     let matDialogConfig = {
@@ -271,11 +275,11 @@ export class UserStoryComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       console.log('Dialog closed');
       if (result != null) {
-        this.userStoryService.deleteUserStory(this.userStory.id).subscribe(
+        const userStoryId = this.userStory.id;
+        this.userStoryService.deleteUserStory(userStoryId).subscribe(
           (response) => {
             if (response == null) {
-              const indexOfUserStory = this.project.userStories.findIndex(item => item.id === this.userStory.id);
-              this.project.userStories.splice(indexOfUserStory, 1);
+              this.onRemove.emit(userStoryId);
               this.toastService.success(this.userStory.name + ' user story was removed', 'User story removed');
             }
           },

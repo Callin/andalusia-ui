@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Task} from "../../dto/task";
 import {User} from "../../dto/user";
 import {AppConstants} from "../../util/app-constants";
@@ -18,8 +18,9 @@ import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.co
 export class TaskComponent implements OnInit {
 
   @Input() task: Task = Task.getBlankTask();
-  @Input() userStory: UserStory = UserStory.getBlankUserStory();
+  @Input() userStoryId: number;
   @Input() projectUsers: User[] = [];
+  @Output() onRemove = new EventEmitter<number>();
   public statusList = AppConstants.STATUS_LIST;
 
   constructor(private taskService: TaskService,
@@ -32,7 +33,7 @@ export class TaskComponent implements OnInit {
 
   onStatusChange() {
     this.task.userStory = UserStory.getBlankUserStory();
-    this.task.userStory.id = this.userStory.id;
+    this.task.userStory.id = this.userStoryId;
     this.taskService.updateTask(this.task).subscribe(
       () => this.toastService.info('Task has been updated ', 'Task update'),
       () => this.toastService.error('Task has not been updated ', 'Task update'))
@@ -79,7 +80,7 @@ export class TaskComponent implements OnInit {
           this.task.user = result.boardItemForm.controls['user'].value;
 
           this.task.userStory= UserStory.getBlankUserStory();
-          this.task.userStory.id = this.userStory.id;
+          this.task.userStory.id = this.userStoryId;
 
           this.taskService.updateTask(this.task).subscribe(
             () => {
@@ -112,8 +113,7 @@ export class TaskComponent implements OnInit {
         this.taskService.deleteTask(this.task.id)
           .subscribe((response) => {
               if (response == null) {
-                const indexOfTask = this.userStory.tasks.findIndex(item => item.id === this.task.id);
-                this.userStory.tasks.splice(indexOfTask, 1);
+                this.onRemove.emit(this.task.id);
                 this.toastService.success(this.task.name + ' task was removed', 'Task removed');
               }
             },

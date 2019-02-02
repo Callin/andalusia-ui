@@ -12,6 +12,12 @@ export class SprintService {
   constructor(private httpClient: HttpClient) {
   }
 
+  getCurrentSprint(projectId: number): Observable<Sprint> {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+
+    return this.httpClient.get<Sprint>(AppConstants.SPRINT_URL + '/project/' + projectId, {headers: header});
+  }
+
   getSprint(sprintId: number, brief: string): Observable<Sprint> {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
 
@@ -20,6 +26,13 @@ export class SprintService {
 
     return this.httpClient.get<Sprint>(AppConstants.SPRINT_URL + '/' + sprintId, {headers: header, params: params});
   }
+
+  getAllByProjectIdBrief(projectId: number): Observable<Sprint[]> {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    let url = AppConstants.SPRINT_URL + '/project/' + projectId + "/brief";
+    return this.httpClient.get<Sprint[]>(url, {headers: header});
+  }
+
 
   getAllSprints(): Observable<Sprint[]> {
     const header = new HttpHeaders({'Content-Type': 'application/json'});

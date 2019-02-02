@@ -17,6 +17,18 @@ export class UserStoryService {
     return this.httpClient.get<UserStory>(AppConstants.USER_STORY_URL + '/' + userStoryId, {headers: header});
   }
 
+  getAllUserStoriesByProjectIdAndCurrentSprint(projectId: number): Observable<UserStory[]> {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    let url = AppConstants.USER_STORY_URL + '/project/' + projectId + '/currentsprint';
+    return this.httpClient.get<UserStory[]>(url, {headers: header});
+  }
+
+  getAllUserStoriesByProjectIdAndSprintId(projectId: number, sprintId: number): Observable<UserStory[]> {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    let url = AppConstants.USER_STORY_URL + '/project/' + projectId + '/sprint/' + sprintId;
+    return this.httpClient.get<UserStory[]>(url, {headers: header});
+  }
+
   getAllUserStorys(): Observable<UserStory[]> {
     const header = new HttpHeaders({'Content-Type': 'application/json'});
     return this.httpClient.get<UserStory[]>(AppConstants.USER_STORY_URL + '/all', {headers: header});
