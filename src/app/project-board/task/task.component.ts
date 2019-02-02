@@ -8,7 +8,6 @@ import {UserStory} from "../../dto/user-story";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material";
 import {TaskDialogComponent} from "../../dialog/task-dialog/task-dialog.component";
-import {Bug} from "../../dto/bug";
 import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.component";
 
 @Component({

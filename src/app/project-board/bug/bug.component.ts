@@ -112,8 +112,8 @@ export class BugComponent implements OnInit {
         this.bugService.deleteBug(this.bug.id)
           .subscribe((response) => {
               if (response == null) {
-                const indexOfTask = this.userStory.bugs.findIndex(item => item.id === this.bug.id);
-                this.userStory.bugs.splice(indexOfTask, 1);
+                const indexOfBug = this.userStory.bugs.findIndex(item => item.id === this.bug.id);
+                this.userStory.bugs.splice(indexOfBug, 1);
                 this.toastService.success(this.bug.name + ' bug was removed', 'Bug removed');
               }
             },

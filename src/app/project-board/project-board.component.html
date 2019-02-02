@@ -38,7 +38,10 @@
       </app-task>
     </div>
     <div *ngFor="let bug of userStory.bugs">
-      <app-bug [bug]="bug" *ngIf="bug.status === NEW"></app-bug>
+      <app-bug *ngIf="bug.status === NEW"
+               [bug]="bug"
+               [projectUsers]="project.users"
+               [userStory]="userStory">></app-bug>
     </div>
   </div>
 
