@@ -56,12 +56,15 @@ import { BugDialogComponent } from './dialog/bug-dialog/bug-dialog.component';
 import {UserStoryService} from "./service/userstory-service";
 import {TaskService} from "./service/task-service";
 import {BugService} from "./service/bug-service";
+import { ProjectBacklogComponent } from './project-backlog/project-backlog.component';
+import { SprintDialogComponent } from './dialog/sprint-dialog/sprint-dialog.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomepageComponent},
   {path: 'admin', component: AdminComponent},
   {path: 'organization/:id', component: OrganizationComponent},
   {path: 'project/:id', component: ProjectBoardComponent},
+  {path: 'project/:id/backlog', component: ProjectBacklogComponent},
 ];
 
 @NgModule({
@@ -86,7 +89,9 @@ const appRoutes: Routes = [
     BugComponent,
     UserstoryDialogComponent,
     TaskDialogComponent,
-    BugDialogComponent
+    BugDialogComponent,
+    ProjectBacklogComponent,
+    SprintDialogComponent
   ],
   imports: [
     MatButtonModule,
@@ -127,7 +132,8 @@ const appRoutes: Routes = [
     BugDialogComponent,
     ProjectDialogComponent,
     ProjectUsersDialogComponent,
-    RemoveDialogComponent
+    RemoveDialogComponent,
+    SprintDialogComponent
   ],
   providers: [
     OrganizationService,

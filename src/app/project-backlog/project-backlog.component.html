@@ -1,0 +1,82 @@
+<div class="row" *ngIf="isSprintListEmpty()">
+  <div class="col">
+    <br/>
+    <br/>
+    <button mat-raised-button color="primary" (click)="addNewSprint()" matTooltip="Add sprint">Add sprint</button>
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="project.sprints !== null && project.sprints !== undefined && project.sprints.length > 0">
+  <div *ngFor="let sprint of project.sprints">
+    <div>
+      <span>Sprint</span> {{sprint.number}}
+      <span class="toDate">From: {{sprint.startDate | date:'mediumDate'}}</span>
+      <span class="fromDate">To: {{sprint.endDate | date:'mediumDate'}}</span>
+    </div>
+    <mat-divider></mat-divider>
+    <div>
+      <div class="row">
+        <div class="col-1">Id</div>
+        <div class="col">Title</div>
+        <div class="col">Name</div>
+        <div class="col">Estimation</div>
+        <div class="col">Priority</div>
+        <div class="col">Edit</div>
+        <div class="col">Remove</div>
+      </div>
+      <mat-divider class="mat-divider-on-board"></mat-divider>
+      <div class="row" *ngFor="let userStory of sprint.userStories">
+        <div class="col-1">
+          {{userStory.id}}
+        </div>
+        <div class="col">
+          {{userStory.name}}
+        </div>
+        <div class="col">
+          {{userStory.user.name}}
+        </div>
+        <div class="col">
+          {{userStory.estimation}}
+        </div>
+        <div class="col">
+          {{userStory.priority}}
+        </div>
+        <div class="col">
+          <mat-icon class="account-icon"
+                    color="link"
+                    matTooltip="Edit user"
+                    (click)="openEditUserDialog(user)">
+            mode_edit
+          </mat-icon>
+        </div>
+        <div class="col">
+          <mat-icon class="account-icon"
+                    color="link"
+                    matTooltip="Delete project"
+                    (click)="openRemoveUserDialog(user.id, user.name)">
+            delete_forever
+          </mat-icon>
+        </div>
+        <mat-divider class="mat-divider-on-board"></mat-divider>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <span class="add-sprint-wrapper">
+          <mat-icon class="add-sprint" color="primary" (click)="addNewBug()" matTooltip="Add new user story">add_box</mat-icon>
+          <span class="add-sprint-text">Add new user story</span>
+        </span>
+      </div>
+      <div class="col-2">
+        <span class="add-sprint-wrapper" (click)="addNewSprint()" >
+          <mat-icon class="add-sprint" color="primary" matTooltip="Add new sprint">add_box</mat-icon>
+          <span class="add-sprint-text">Add new sprint</span>
+        </span>
+      </div>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+  </div>
+</div>
+

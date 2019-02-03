@@ -28,8 +28,8 @@ export class ProjectBoardComponent implements OnInit {
   projectId: number;
   currentSprint: Sprint = Sprint.getBlankSprint();
   sprints: Sprint[] = [];
-  userStories: UserStory[];
-  projectUsers: User[];
+  userStories: UserStory[] = [];
+  projectUsers: User[] = [];
 
   constructor(private route: ActivatedRoute,
               private formBuilder: FormBuilder,
@@ -44,11 +44,17 @@ export class ProjectBoardComponent implements OnInit {
     this.projectId = this.route.snapshot.params['id'];
 
     this.springService.getAllByProjectIdBrief(this.projectId).subscribe(
-      (response: Sprint[]) => this.sprints = response,
-      (error) => console.log(error));
-
-    this.springService.getCurrentSprint(this.projectId).subscribe(
-      (response: Sprint) => this.currentSprint = response,
+      (response: Sprint[]) => {
+        if (response) {
+          this.sprints = response;
+          let now: Date = new Date();
+          this.currentSprint = response.find((sprint: Sprint) => {
+            const startDate = new Date(sprint.startDate);
+            const endDate = new Date(sprint.endDate);
+            return startDate.getTime() <= now.getTime() && endDate.getTime() >= now.getTime();
+          });
+        }
+      },
       (error) => console.log(error));
 
     this.userStoryService.getAllUserStoriesByProjectIdAndCurrentSprint(this.projectId).subscribe(
@@ -122,7 +128,10 @@ export class ProjectBoardComponent implements OnInit {
           userStory.project = Project.getBlankProject();
           userStory.project.id = this.projectId;
 
-          console.log('On create user story: ');
+          userStory.sprint = Sprint.getBlankSprint();
+          userStory.sprint.id = this.currentSprint.id;
+
+          console.log('On create new user story from project board component: ');
           this.userStoryService.createUserStory(userStory).subscribe(
             (response) => this.userStories.push(response),
             (error) => console.log(error));

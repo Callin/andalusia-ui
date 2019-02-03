@@ -15,6 +15,7 @@ import {Bug} from "../../dto/bug";
 import {BugService} from "../../service/bug-service";
 import {BugDialogComponent} from "../../dialog/bug-dialog/bug-dialog.component";
 import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.component";
+import {Sprint} from "../../dto/sprint";
 
 @Component({
   selector: 'app-user-story',
@@ -26,6 +27,7 @@ export class UserStoryComponent implements OnInit {
   @Input() userStory: UserStory = UserStory.getBlankUserStory();
   @Input() projectUsers: User[] = [];
   @Input() projectId: number;
+  @Input() sprintId: number;
   @Output() onAdd = new EventEmitter<UserStory>();
   @Output() onRemove = new EventEmitter<number>();
 
@@ -40,10 +42,6 @@ export class UserStoryComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  openExistingUserStoryDialog(userStory: UserStory) {
-
   }
 
   addNewUserStory() {
@@ -83,10 +81,13 @@ export class UserStoryComponent implements OnInit {
 
           userStory.user = result.boardItemForm.controls['user'].value;
 
+          userStory.sprint = Sprint.getBlankSprint();
+          userStory.sprint.id = this.sprintId;
+
           userStory.project = Project.getBlankProject();
           userStory.project.id = this.projectId;
 
-          console.log('On create user story: ');
+          console.log('On new user story: ');
           this.userStoryService.createUserStory(userStory).subscribe(
             (response) => {
               // this.project.userStories.push(response);
@@ -138,7 +139,9 @@ export class UserStoryComponent implements OnInit {
           this.userStory.project = Project.getBlankProject();
           this.userStory.project.id = this.projectId;
 
-          console.log('On create user story: ');
+          this.userStory.sprint = Sprint.getBlankSprint();
+          this.userStory.sprint.id = this.sprintId;
+
           this.userStoryService.updateUserStory(this.userStory).subscribe(
             () => {
               this.toastService.info('User story has been updated ', 'User story update');
@@ -197,7 +200,6 @@ export class UserStoryComponent implements OnInit {
           task.userStory = UserStory.getBlankUserStory();
           task.userStory.id = this.userStory.id;
 
-          console.log('On create user story: ');
           this.taskService.createTask(task).subscribe(
             (response) => {
               this.userStory.tasks.push(response);

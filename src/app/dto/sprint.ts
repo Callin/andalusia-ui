@@ -5,7 +5,7 @@ export class Sprint {
 
   id: number;
 
-  name: number;
+  number: number;
 
   startDate: Date;
 
@@ -16,13 +16,13 @@ export class Sprint {
   userStories: UserStory[];
 
   constructor(id: number,
-              name: number,
+              number: number,
               startDate: Date,
               endDate: Date,
               userStories: UserStory[],
               project: Project) {
     this.id = id;
-    this.name = name;
+    this.number = number;
     this.startDate = startDate;
     this.endDate = endDate;
     this.userStories = userStories;

@@ -33,6 +33,12 @@ export class SprintService {
     return this.httpClient.get<Sprint[]>(url, {headers: header});
   }
 
+  getAllByProjectId(projectId: number): Observable<Sprint[]> {
+    const header = new HttpHeaders({'Content-Type': 'application/json'});
+    let url = AppConstants.SPRINT_URL + '/project/' + projectId;
+    return this.httpClient.get<Sprint[]>(url, {headers: header});
+  }
+
 
   getAllSprints(): Observable<Sprint[]> {
     const header = new HttpHeaders({'Content-Type': 'application/json'});

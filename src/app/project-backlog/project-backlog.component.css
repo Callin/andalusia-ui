@@ -1,0 +1,20 @@
+.toDate{
+  margin-left: 20px;
+}
+
+.fromDate{
+  margin-left: 20px;
+}
+
+.add-sprint {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.add-sprint-text:hover {
+  text-decoration: underline;
+}
+
+.add-sprint-wrapper {
+  cursor: pointer;
+}
