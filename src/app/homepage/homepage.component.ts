@@ -18,8 +18,8 @@ export class HomepageComponent implements OnInit {
               private projectService: ProjectService) { }
 
   ngOnInit() {
-    let authorization = this.localStorage.get('userId');
-    this.projectService.getAllProjectsByUserId(4).subscribe( // to be changed
+    let userId = this.localStorage.get('userId');
+    this.projectService.getAllProjectsByUserId(userId).subscribe(
       (projects) => this.projects = projects,
       (error) => console.log(error));
     }

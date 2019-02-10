@@ -19,7 +19,7 @@ export class BasicAuthInterceptor implements HttpInterceptor {
 
     return next.handle(request).pipe(catchError((err) => {
       if (err.status === 401) {
-        this.router.navigate(['/signin'])
+        this.authService.signOut()
       }
       return throwError(err);
     }));
