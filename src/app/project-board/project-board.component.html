@@ -1,3 +1,15 @@
+<h3>Project name: {{project.name}}</h3>
+
+<div>
+  <mat-form-field>
+    <mat-select placeholder="Sprint" (selectionChange)="onSprintChange($event.value)">
+      <mat-option *ngFor="let sprint of sprints" [value]="sprint.id">
+        {{sprint.startDate | date:'mediumDate'}} - {{sprint.endDate | date:'mediumDate'}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
 <mat-divider class="menu-divider"></mat-divider>
 
 <div class="row">

@@ -35,7 +35,7 @@ export class TaskComponent implements OnInit {
     this.task.userStory = UserStory.getBlankUserStory();
     this.task.userStory.id = this.userStoryId;
     this.taskService.updateTask(this.task).subscribe(
-      () => this.toastService.info('Task has been updated ', 'Task update'),
+      () => this.toastService.success('Task has been updated ', 'Task update'),
       () => this.toastService.error('Task has not been updated ', 'Task update'))
   }
 
@@ -84,7 +84,7 @@ export class TaskComponent implements OnInit {
 
           this.taskService.updateTask(this.task).subscribe(
             () => {
-              this.toastService.info('Task has been updated ', 'Task update');
+              this.toastService.success('Task has been updated ', 'Task update');
               boardItemForm.controls['user'].setValue(this.task.user);
             },
             () => this.toastService.error('Task has not been updated ', 'Task update'))

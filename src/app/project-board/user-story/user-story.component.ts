@@ -57,7 +57,6 @@ export class UserStoryComponent implements OnInit {
 
     const allUsers = this.projectUsers;
     const statusList: string[] = AppConstants.STATUS_LIST;
-    const isNew = true;
 
     let matDialogConfig = {
       data: {
@@ -86,13 +85,14 @@ export class UserStoryComponent implements OnInit {
 
           userStory.project = Project.getBlankProject();
           userStory.project.id = this.projectId;
+          userStory.bugs = [];
+          userStory.tasks = [];
 
           console.log('On new user story: ');
           this.userStoryService.createUserStory(userStory).subscribe(
             (response) => {
-              // this.project.userStories.push(response);
               this.onAdd.emit(response);
-              this.toastService.info('User story has been added', 'User story add');
+              this.toastService.success('User story has been added', 'User story add');
             },
             () => this.toastService.error('User story has not been added', 'User story add'))
         }
@@ -144,7 +144,7 @@ export class UserStoryComponent implements OnInit {
 
           this.userStoryService.updateUserStory(this.userStory).subscribe(
             () => {
-              this.toastService.info('User story has been updated ', 'User story update');
+              this.toastService.success('User story has been updated ', 'User story update');
               boardItemForm.controls['user'].setValue(this.userStory.user);
             },
             () => this.toastService.error('User story has not been updated ', 'User story update'))
@@ -157,7 +157,7 @@ export class UserStoryComponent implements OnInit {
     this.userStory.project = Project.getBlankProject();
     this.userStory.project.id = this.projectId;
     this.userStoryService.updateUserStory(this.userStory).subscribe(
-        (response) => this.toastService.info('User story has been updated ', 'User story update'),
+        (response) => this.toastService.success('User story has been updated ', 'User story update'),
         (error) => this.toastService.error('User story has not been updated ', 'User story update'))
   }
 
@@ -203,7 +203,7 @@ export class UserStoryComponent implements OnInit {
           this.taskService.createTask(task).subscribe(
             (response) => {
               this.userStory.tasks.push(response);
-              this.toastService.info('Task has been added', 'Task add');
+              this.toastService.success('Task has been added', 'Task add');
             },
             () => this.toastService.error('Task has not been updated ', 'Task update'))
         }
@@ -253,7 +253,7 @@ export class UserStoryComponent implements OnInit {
           this.bugService.createBug(bug).subscribe(
             (response) => {
               this.userStory.bugs.push(response);
-              this.toastService.info('Bug has been added', 'Bug add');
+              this.toastService.success('Bug has been added', 'Bug add');
             },
             () => this.toastService.error('Bug has not been updated ', 'Bug update'))
         }

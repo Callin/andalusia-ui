@@ -36,7 +36,7 @@ export class BugComponent implements OnInit {
     this.bug.userStory = UserStory.getBlankUserStory();
     this.bug.userStory.id = this.userStoryId;
     this.bugService.updateBug(this.bug).subscribe(
-      () => this.toastService.info('Bug has been updated ', 'Bug update'),
+      () => this.toastService.success('Bug has been updated ', 'Bug update'),
       () => this.toastService.error('Bug has not been updated ', 'Bug update'))
   }
 
@@ -85,7 +85,7 @@ export class BugComponent implements OnInit {
 
           this.bugService.updateBug(this.bug).subscribe(
             () => {
-              this.toastService.info('Bug has been updated ', 'Bug update');
+              this.toastService.success('Bug has been updated ', 'Bug update');
               boardItemForm.controls['user'].setValue(this.bug.user);
             },
             () => this.toastService.error('Bug has not been updated ', 'Bug update'))
