@@ -30,7 +30,7 @@ import {
   MatTabGroup,
   MatTabsModule
 } from '@angular/material';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {OrganizationDialogComponent} from './dialog/organization-dialog/organization-dialog.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {OrganizationService} from './service/organization-service';
@@ -58,13 +58,20 @@ import {TaskService} from "./service/task-service";
 import {BugService} from "./service/bug-service";
 import { ProjectBacklogComponent } from './project-backlog/project-backlog.component';
 import { SprintDialogComponent } from './dialog/sprint-dialog/sprint-dialog.component';
+import { SigninComponent } from './signin/signin.component';
+import {LOCAL_STORAGE_SERVICE, LocalStorageService} from "./service/localstorage-service";
+import {AuthGuard} from "./guard/auth-guard";
+import {BasicAuthInterceptor} from "./interceptor/basic-auth-interceptor";
+import {LOCAL_STORAGE, StorageServiceModule} from "ngx-webstorage-service";
+import {AuthService} from "./service/auth-service";
 
 const appRoutes: Routes = [
-  {path: '', component: HomepageComponent},
-  {path: 'admin', component: AdminComponent},
-  {path: 'organization/:id', component: OrganizationComponent},
-  {path: 'project/:id', component: ProjectBoardComponent},
-  {path: 'project/:id/backlog', component: ProjectBacklogComponent},
+  {path: '', component: HomepageComponent, canActivate: [AuthGuard]},
+  {path: 'admin', component: AdminComponent, canActivate: [AuthGuard]},
+  {path: 'organization/:id', component: OrganizationComponent, canActivate: [AuthGuard]},
+  {path: 'project/:id', component: ProjectBoardComponent, canActivate: [AuthGuard]},
+  {path: 'project/:id/backlog', component: ProjectBacklogComponent, canActivate: [AuthGuard]},
+  {path: 'signin', component: SigninComponent},
 ];
 
 @NgModule({
@@ -91,7 +98,8 @@ const appRoutes: Routes = [
     TaskDialogComponent,
     BugDialogComponent,
     ProjectBacklogComponent,
-    SprintDialogComponent
+    SprintDialogComponent,
+    SigninComponent
   ],
   imports: [
     MatButtonModule,
@@ -118,7 +126,8 @@ const appRoutes: Routes = [
     BrowserAnimationsModule,
     RouterModule.forRoot(appRoutes),
     ToastrModule.forRoot(),
-    ToastContainerModule
+    ToastContainerModule,
+    StorageServiceModule
   ],
   entryComponents: [
     AdminComponent,
@@ -133,7 +142,8 @@ const appRoutes: Routes = [
     ProjectDialogComponent,
     ProjectUsersDialogComponent,
     RemoveDialogComponent,
-    SprintDialogComponent
+    SprintDialogComponent,
+    SigninComponent
   ],
   providers: [
     OrganizationService,
@@ -143,7 +153,12 @@ const appRoutes: Routes = [
     UserStoryService,
     TaskService,
     BugService,
-    ToastrModule
+    ToastrModule,
+    AuthGuard,
+    AuthService,
+    LocalStorageService,
+    {provide: LOCAL_STORAGE_SERVICE, useExisting: LOCAL_STORAGE},
+    {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true}
   ],
   exports: [
     MatDividerModule,
