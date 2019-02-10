@@ -2,6 +2,8 @@ import {EventEmitter, Inject, Injectable, Output} from '@angular/core';
 import {Router} from "@angular/router";
 import {LOCAL_STORAGE_SERVICE, LocalStorageService} from "./localstorage-service";
 import {UserService} from "./user-service";
+import {User} from "../dto/user";
+import {Util} from "../util/util";
 
 @Injectable()
 export class AuthService {
@@ -16,13 +18,14 @@ export class AuthService {
   signIn(username: string, password: string) {
 
     const authenticationHeaderValue = 'Basic ' + btoa(username + ':' + password);
-    this.userService.checkCredentials(authenticationHeaderValue).subscribe(result => {
-
-        if (result === true) {
+    this.userService.checkCredentials(authenticationHeaderValue, username).subscribe((result: User) => {
+        if (!Util.isNullOrUndefined(result)) {
           console.log("checking credentials");
           this.changeIsAuthenticated.emit(true);
           this.invalidCredentials.emit(false);
           this.localStorage.set('Authorization', authenticationHeaderValue);
+          this.localStorage.set('userId', result.id);
+          this.localStorage.set('email', result.email);
           this.router.navigate(['']);
         }
       },

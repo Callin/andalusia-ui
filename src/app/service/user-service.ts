@@ -26,9 +26,9 @@ export class UserService {
     return this.httpClient.get<User[]>(AppConstants.USER_URL + '/all', {headers: header});
   }
 
-  checkCredentials(authenticationHeaderValue: string): Observable<boolean> {
+  checkCredentials(authenticationHeaderValue: string, userName: string): Observable<User> {
     let authHeader = new HttpHeaders({'Content-Type': 'application/json', 'Authorization': authenticationHeaderValue});
-    return this.httpClient.get<boolean>(AppConstants.USER_URL + '/authenticate', {headers: authHeader});
+    return this.httpClient.get<User>(AppConstants.USER_URL + "/" +userName + '/authenticate', {headers: authHeader});
   }
 
   getAllUsersByOrganizationId(id: number): Observable<User[]> {
