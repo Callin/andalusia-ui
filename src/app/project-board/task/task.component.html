@@ -5,7 +5,7 @@
   <mat-card-content>
     <div class="owner">Owner: {{getUserName(task.user)}}</div>
     <mat-form-field>
-      <mat-select [(value)]="task.status" (selectionChange)='onStatusChange(task)'>
+      <mat-select [(value)]="task.status" (selectionChange)='onStatusChange()'>
         <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -15,7 +15,7 @@
       <span>Estimate: {{task.estimation}} h</span>
       <span>
         <mat-icon class="add-task-bug" color="link" matTooltip="Delete task"
-                  (click)="openRemoveTaskDialog(task, userStory)">delete_forever</mat-icon>
+                  (click)="openRemoveTaskDialog()">delete_forever</mat-icon>
       </span>
     </div>
   </mat-card-content>

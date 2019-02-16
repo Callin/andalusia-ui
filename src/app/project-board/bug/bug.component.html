@@ -5,7 +5,7 @@
   <mat-card-content>
     <div class="owner">Owner: {{getUserName(bug.user)}}</div>
     <mat-form-field>
-      <mat-select [(value)]="bug.status" (selectionChange)='onStatusChange(bug)'>
+      <mat-select [(value)]="bug.status" (selectionChange)='onStatusChange()'>
         <mat-option *ngFor="let status of statusList" value={{status}}>{{status}}</mat-option>
       </mat-select>
     </mat-form-field>

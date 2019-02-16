@@ -125,6 +125,7 @@ export class UsersTabComponent implements OnInit {
       if (result != null) {
         this.userService.deleteUser(id).subscribe(
           (response) => {
+            // should remove user from organization not from the app
             if (response == null) {
               const indexOfUser = this.users.findIndex(user => user.id === id);
               this.users.splice(indexOfUser, 1);

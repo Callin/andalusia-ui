@@ -19,7 +19,7 @@ export class ProjectBacklogComponent implements OnInit {
 
   private sprints: Sprint[] = [];
   private projectId: number;
-  private project: Project = Project.getBlankProject();
+  project: Project = Project.getBlankProject();
 
   constructor(private route: ActivatedRoute,
               private sprintService: SprintService,

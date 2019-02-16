@@ -35,7 +35,7 @@
     <!--- -------------- status = New --------------  -->
     <app-user-story *ngIf="userStory.status === NEW"
                     [userStory]="userStory"
-                    [projectId]="projectId"
+                    [projectId]="project.id"
                     [projectUsers]="projectUsers"
                     [sprintId]="currentSprint.id"
                     (onAdd)="onAddUserStory($event)"
@@ -64,7 +64,7 @@
   <div class="col-sm-3">
     <app-user-story *ngIf="userStory.status === IN_PROGRESS"
                     [userStory]="userStory"
-                    [projectId]="projectId"
+                    [projectId]="project.id"
                     [projectUsers]="projectUsers"
                     [sprintId]="currentSprint.id"
                     (onAdd)="onAddUserStory($event)"
@@ -92,7 +92,7 @@
     <!--- -------------- status = In Review --------------  -->
     <app-user-story *ngIf="userStory.status === IN_REVIEW"
                     [userStory]="userStory"
-                    [projectId]="projectId"
+                    [projectId]="project.id"
                     [projectUsers]="projectUsers"
                     [sprintId]="currentSprint.id"
                     (onAdd)="onAddUserStory($event)"
@@ -120,7 +120,7 @@
     <!--- -------------- status = Done --------------  -->
     <app-user-story *ngIf="userStory.status === DONE"
                     [userStory]="userStory"
-                    [projectId]="projectId"
+                    [projectId]="project.id"
                     [projectUsers]="projectUsers"
                     [sprintId]="currentSprint.id"
                     (onAdd)="onAddUserStory($event)"
