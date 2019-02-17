@@ -156,6 +156,10 @@ export class UserStoryComponent implements OnInit {
   onUserStoryStatusChange() {
     this.userStory.project = Project.getBlankProject();
     this.userStory.project.id = this.projectId;
+
+    this.userStory.sprint = Sprint.getBlankSprint();
+    this.userStory.sprint.id = this.sprintId;
+
     this.userStoryService.updateUserStory(this.userStory).subscribe(
         (response) => this.toastService.success('User story has been updated ', 'User story update'),
         (error) => this.toastService.error('User story has not been updated ', 'User story update'))
