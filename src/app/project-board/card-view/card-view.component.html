@@ -1,0 +1,135 @@
+<mat-divider class="menu-divider"></mat-divider>
+
+<div class="row">
+  <div class="col">New</div>
+  <div class="col">In Progress</div>
+  <div class="col">In Review</div>
+  <div class="col">Done</div>
+</div>
+<mat-divider class="menu-divider"></mat-divider>
+
+<div class="row" *ngIf="isUserStoryListEmpty()">
+  <div class="col">
+    <br/>
+    <br/>
+    <button mat-raised-button color="primary" (click)="addNewUserStory()" matTooltip="Add new story">Add new
+      user story
+    </button>
+  </div>
+</div>
+
+<div class="row" *ngFor="let userStory of userStories">
+  <div class="col-sm-3">
+    <!--- -------------- status = New --------------  -->
+    <app-user-story *ngIf="userStory.status === NEW"
+                    [userStory]="userStory"
+                    [projectId]="project.id"
+                    [projectUsers]="projectUsers"
+                    [sprintId]="currentSprint.id"
+                    (onAdd)="onAddUserStory($event)"
+                    (onRemove)="onRemoveUserStory($event)">
+
+    </app-user-story>
+    <div *ngFor="let task of userStory.tasks">
+      <app-task *ngIf="task.status === NEW"
+                [task]="task"
+                [projectUsers]="projectUsers"
+                [userStoryId]="userStory.id"
+                (onRemove)="onRemoveTask($event, userStory.id)">
+      </app-task>
+    </div>
+    <div *ngFor="let bug of userStory.bugs">
+      <app-bug *ngIf="bug.status === NEW"
+               [bug]="bug"
+               [projectUsers]="projectUsers"
+               [userStoryId]="userStory.id"
+               (onRemove)="onRemoveBug($event, userStory.id)">
+      </app-bug>
+    </div>
+  </div>
+
+  <!--- -------------- status = In progress --------------  -->
+  <div class="col-sm-3">
+    <app-user-story *ngIf="userStory.status === IN_PROGRESS"
+                    [userStory]="userStory"
+                    [projectId]="project.id"
+                    [projectUsers]="projectUsers"
+                    [sprintId]="currentSprint.id"
+                    (onAdd)="onAddUserStory($event)"
+                    (onRemove)="onRemoveUserStory($event)">
+    </app-user-story>
+    <div *ngFor="let task of userStory.tasks">
+      <app-task *ngIf="task.status === IN_PROGRESS"
+                [task]="task"
+                [projectUsers]="projectUsers"
+                [userStoryId]="userStory.id"
+                (onRemove)="onRemoveTask($event, userStory.id)">
+      </app-task>
+    </div>
+    <div *ngFor="let bug of userStory.bugs">
+      <app-bug *ngIf="bug.status === IN_PROGRESS"
+               [bug]="bug"
+               [projectUsers]="projectUsers"
+               [userStoryId]="userStory.id"
+               (onRemove)="onRemoveBug($event, userStory.id)">
+      </app-bug>
+    </div>
+  </div>
+
+  <div class="col-sm-3">
+    <!--- -------------- status = In Review --------------  -->
+    <app-user-story *ngIf="userStory.status === IN_REVIEW"
+                    [userStory]="userStory"
+                    [projectId]="project.id"
+                    [projectUsers]="projectUsers"
+                    [sprintId]="currentSprint.id"
+                    (onAdd)="onAddUserStory($event)"
+                    (onRemove)="onRemoveUserStory($event)">
+    </app-user-story>
+    <div *ngFor="let task of userStory.tasks">
+      <app-task *ngIf="task.status === IN_REVIEW"
+                [task]="task"
+                [projectUsers]="projectUsers"
+                [userStoryId]="userStory.id"
+                (onRemove)="onRemoveTask($event, userStory.id)">
+      </app-task>
+    </div>
+    <div *ngFor="let bug of userStory.bugs">
+      <app-bug *ngIf="bug.status === IN_REVIEW"
+               [bug]="bug"
+               [projectUsers]="projectUsers"
+               [userStoryId]="userStory.id"
+               (onRemove)="onRemoveBug($event, userStory.id)">
+      </app-bug>
+    </div>
+  </div>
+
+  <div class="col-sm-3">
+    <!--- -------------- status = Done --------------  -->
+    <app-user-story *ngIf="userStory.status === DONE"
+                    [userStory]="userStory"
+                    [projectId]="project.id"
+                    [projectUsers]="projectUsers"
+                    [sprintId]="currentSprint.id"
+                    (onAdd)="onAddUserStory($event)"
+                    (onRemove)="onRemoveUserStory($event)">
+    </app-user-story>
+    <div *ngFor="let task of userStory.tasks">
+      <app-task *ngIf="task.status === DONE"
+                [task]="task"
+                [projectUsers]="projectUsers"
+                [userStoryId]="userStory.id"
+                (onRemove)="onRemoveTask($event, userStory.id)">
+      </app-task>
+    </div>
+    <div *ngFor="let bug of userStory.bugs">
+      <app-bug *ngIf="bug.status === DONE"
+               [bug]="bug"
+               [projectUsers]="projectUsers"
+               [userStoryId]="userStory.id"
+               (onRemove)="onRemoveBug($event, userStory.id)">
+      </app-bug>
+    </div>
+  </div>
+  <mat-divider class="mat-divider-on-board"></mat-divider>
+</div>

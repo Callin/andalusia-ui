@@ -1,21 +1,21 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {UserStory} from "../../dto/user-story";
-import {User} from "../../dto/user";
-import {AppConstants} from "../../util/app-constants";
-import {UserStoryService} from "../../service/userstory-service";
+import {UserStory} from "../../../dto/user-story";
+import {User} from "../../../dto/user";
+import {AppConstants} from "../../../util/app-constants";
+import {UserStoryService} from "../../../service/userstory-service";
 import {ToastrService} from "ngx-toastr";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserstoryDialogComponent} from "../../dialog/userstory-dialog/userstory-dialog.component";
-import {Project} from "../../dto/project";
+import {UserstoryDialogComponent} from "../../../dialog/userstory-dialog/userstory-dialog.component";
+import {Project} from "../../../dto/project";
 import {MatDialog} from "@angular/material";
-import {TaskDialogComponent} from "../../dialog/task-dialog/task-dialog.component";
-import {Task} from "../../dto/task";
-import {TaskService} from "../../service/task-service";
-import {Bug} from "../../dto/bug";
-import {BugService} from "../../service/bug-service";
-import {BugDialogComponent} from "../../dialog/bug-dialog/bug-dialog.component";
-import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.component";
-import {Sprint} from "../../dto/sprint";
+import {TaskDialogComponent} from "../../../dialog/task-dialog/task-dialog.component";
+import {Task} from "../../../dto/task";
+import {TaskService} from "../../../service/task-service";
+import {Bug} from "../../../dto/bug";
+import {BugService} from "../../../service/bug-service";
+import {BugDialogComponent} from "../../../dialog/bug-dialog/bug-dialog.component";
+import {RemoveDialogComponent} from "../../../dialog/remove-dialog/remove-dialog.component";
+import {Sprint} from "../../../dto/sprint";
 
 @Component({
   selector: 'app-user-story',

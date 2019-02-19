@@ -1,14 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Bug} from "../../dto/bug";
-import {UserStory} from "../../dto/user-story";
-import {User} from "../../dto/user";
-import {AppConstants} from "../../util/app-constants";
+import {Bug} from "../../../dto/bug";
+import {UserStory} from "../../../dto/user-story";
+import {User} from "../../../dto/user";
+import {AppConstants} from "../../../util/app-constants";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material";
 import {ToastrService} from "ngx-toastr";
-import {BugDialogComponent} from "../../dialog/bug-dialog/bug-dialog.component";
-import {BugService} from "../../service/bug-service";
-import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.component";
+import {BugDialogComponent} from "../../../dialog/bug-dialog/bug-dialog.component";
+import {BugService} from "../../../service/bug-service";
+import {RemoveDialogComponent} from "../../../dialog/remove-dialog/remove-dialog.component";
 
 @Component({
   selector: 'app-bug',

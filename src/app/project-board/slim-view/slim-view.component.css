@@ -1,0 +1,15 @@
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.edit-item {
+  border-bottom: 1px dotted #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+

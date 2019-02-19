@@ -27,7 +27,7 @@ import {
   MatNativeDateModule,
   MatRadioModule,
   MatSelectModule,
-  MatTabGroup,
+  MatTabGroup, MatTableDataSource, MatTableModule,
   MatTabsModule
 } from '@angular/material';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
@@ -47,9 +47,9 @@ import {SprintService} from "./service/sprint-service";
 import { ProjectDialogComponent } from './dialog/project-dialog/project-dialog.component';
 import { ProjectUsersDialogComponent } from './dialog/project-users-dialog/project-users-dialog.component';
 import { ProjectBoardComponent } from './project-board/project-board.component';
-import { UserStoryComponent } from './project-board/user-story/user-story.component';
-import { TaskComponent } from './project-board/task/task.component';
-import { BugComponent } from './project-board/bug/bug.component';
+import { UserStoryComponent } from './project-board/card-view/user-story/user-story.component';
+import { TaskComponent } from './project-board/card-view/task/task.component';
+import { BugComponent } from './project-board/card-view/bug/bug.component';
 import { UserstoryDialogComponent } from './dialog/userstory-dialog/userstory-dialog.component';
 import { TaskDialogComponent } from './dialog/task-dialog/task-dialog.component';
 import { BugDialogComponent } from './dialog/bug-dialog/bug-dialog.component';
@@ -64,6 +64,10 @@ import {AuthGuard} from "./guard/auth-guard";
 import {BasicAuthInterceptor} from "./interceptor/basic-auth-interceptor";
 import {LOCAL_STORAGE, StorageServiceModule} from "ngx-webstorage-service";
 import {AuthService} from "./service/auth-service";
+import { SlimViewComponent } from './project-board/slim-view/slim-view.component';
+import { CardViewComponent } from './project-board/card-view/card-view.component';
+import { BugsDialogComponent } from './project-board/slim-view/bugs-dialog/bugs-dialog.component';
+import { TasksDialogComponent } from './project-board/slim-view/tasks-dialog/tasks-dialog.component';
 
 const appRoutes: Routes = [
   {path: '', component: HomepageComponent, canActivate: [AuthGuard]},
@@ -99,7 +103,11 @@ const appRoutes: Routes = [
     BugDialogComponent,
     ProjectBacklogComponent,
     SprintDialogComponent,
-    SigninComponent
+    SigninComponent,
+    SlimViewComponent,
+    CardViewComponent,
+    BugsDialogComponent,
+    TasksDialogComponent
   ],
   imports: [
     MatButtonModule,
@@ -118,6 +126,7 @@ const appRoutes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     MatTabsModule,
+    MatTableModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -139,6 +148,8 @@ const appRoutes: Routes = [
     UserstoryDialogComponent,
     TaskDialogComponent,
     BugDialogComponent,
+    BugsDialogComponent,
+    TasksDialogComponent,
     ProjectDialogComponent,
     ProjectUsersDialogComponent,
     RemoveDialogComponent,

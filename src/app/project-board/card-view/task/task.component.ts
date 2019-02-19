@@ -1,14 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Task} from "../../dto/task";
-import {User} from "../../dto/user";
-import {AppConstants} from "../../util/app-constants";
-import {TaskService} from "../../service/task-service";
+import {Task} from "../../../dto/task";
+import {User} from "../../../dto/user";
+import {AppConstants} from "../../../util/app-constants";
+import {TaskService} from "../../../service/task-service";
 import {ToastrService} from "ngx-toastr";
-import {UserStory} from "../../dto/user-story";
+import {UserStory} from "../../../dto/user-story";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material";
-import {TaskDialogComponent} from "../../dialog/task-dialog/task-dialog.component";
-import {RemoveDialogComponent} from "../../dialog/remove-dialog/remove-dialog.component";
+import {TaskDialogComponent} from "../../../dialog/task-dialog/task-dialog.component";
+import {RemoveDialogComponent} from "../../../dialog/remove-dialog/remove-dialog.component";
 
 @Component({
   selector: 'app-task',
