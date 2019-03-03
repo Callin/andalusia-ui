@@ -11,8 +11,6 @@ import {UserStoryService} from "../../service/userstory-service";
 import {TaskService} from "../../service/task-service";
 import {BugService} from "../../service/bug-service";
 import {ToastrService} from "ngx-toastr";
-import {TaskDialogComponent} from "../../dialog/task-dialog/task-dialog.component";
-import {Task} from "../../dto/task";
 import {TasksDialogComponent} from "./tasks-dialog/tasks-dialog.component";
 import {BugsDialogComponent} from "./bugs-dialog/bugs-dialog.component";
 

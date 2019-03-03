@@ -9,6 +9,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialog} from "@angular/material";
 import {AppConstants} from "../util/app-constants";
 import {SprintDialogComponent} from "../dialog/sprint-dialog/sprint-dialog.component";
+import {User} from "../dto/user";
 
 @Component({
   selector: 'app-project-backlog',
@@ -76,6 +77,10 @@ export class ProjectBacklogComponent implements OnInit {
 
   isSprintListEmpty(): boolean {
     return Util.isNullOrUndefined(this.sprints) || this.sprints.length === 0;
+  }
+
+  getUserName(user: User): string {
+    return (user === null || user === undefined) ? "none" : user.name;
   }
 
 }
